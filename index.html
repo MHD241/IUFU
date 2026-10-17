@@ -99,7 +99,7 @@ a:hover .pb::before{border-left-color:#1b1407}
 .cap h3{font-size:21px;line-height:1.6}
 
 /* videos */
-.vgrid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:28px;align-items:start}
+.vgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;align-items:start}
 .vmain .ph{aspect-ratio:16/9;display:block}
 .vmain .cap{display:flex;flex-direction:column;gap:14px;align-items:flex-start}
 .vmain h3{font-size:25px}
@@ -108,12 +108,17 @@ a:hover .pb::before{border-left-color:#1b1407}
 .vside .pb{width:52px;height:52px}
 
 /* shorts */
-.srow{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x proximity;padding:6px 4px 22px;margin-inline:-4px;scrollbar-color:var(--raised) transparent}
+.srow{display:flex;gap:20px;overflow-x:auto;padding:6px 4px 22px;margin-inline:-4px;scrollbar-color:var(--raised) transparent}
 .short{position:relative;flex:0 0 196px;aspect-ratio:9/16;border-radius:22px;overflow:hidden;border:1px solid var(--line);background:radial-gradient(circle at 30% 25%,#1a6e3b,#0D3D21 70%);scroll-snap-align:start;box-shadow:var(--shadow);transition:transform .3s,border-color .3s}
 .short:hover{transform:translateY(-4px);border-color:rgba(201,162,75,.5)}
 .short .fade{position:absolute;inset:0;background:linear-gradient(to top,rgba(6,34,19,.94),transparent 58%)}
 .short .over{position:absolute;z-index:2;inset:auto 14px 16px;font-family:var(--f-display);font-size:17px;line-height:1.5}
 .short .pb{width:48px;height:48px}
+.igh{margin-top:46px}
+.igrow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.igc{border-radius:18px;overflow:hidden;background:radial-gradient(circle at 30% 25%,#1a6e3b,#0D3D21 70%);border:1px solid var(--line);box-shadow:var(--shadow)}
+.igc iframe{display:block;width:100%;height:620px;border:0}
+@media(max-width:900px){.igrow{grid-template-columns:1fr;max-width:420px;margin-inline:auto}}
 
 /* about */
 .about{border:1px solid var(--line);border-radius:28px;background:linear-gradient(135deg,#0D3D21,#145A31);position:relative;overflow:hidden;box-shadow:var(--shadow)}
@@ -133,7 +138,11 @@ a:hover .pb::before{border-left-color:#1b1407}
 .acct{padding:0}
 .acct i{width:74px;height:74px;background:#fff;border:0;box-shadow:0 4px 16px rgba(0,0,0,.35)}
 .acct i svg{width:38px;height:38px}
-.g5a{display:flex;flex-wrap:wrap;justify-content:center;gap:26px}
+.g5a{display:flex;flex-wrap:wrap;justify-content:flex-start;gap:26px}
+.accrow{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:34px}
+.bcard{max-width:430px;padding:22px 28px;border-radius:20px;background:linear-gradient(155deg,rgba(18,84,45,.93) 0%,rgba(9,46,25,.95) 45%,rgba(4,24,13,.97) 100%);border:1px solid var(--line);box-shadow:var(--shadow)}
+.bcard h4{font-size:22px;color:var(--gold-l);margin-bottom:10px}
+.bcard p{margin:0;color:var(--text2);font-size:17px}
 .acct:hover{transform:translateY(-3px)}
 .acct svg{width:30px;height:30px;stroke:var(--text);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .acct b{font-family:var(--f-display);font-size:21px;font-weight:800}
@@ -142,7 +151,7 @@ a:hover .pb::before{border-left-color:#1b1407}
 .weave{height:6px;background:repeating-linear-gradient(90deg,var(--w-red) 0 36px,var(--w-ochre) 36px 56px,var(--w-cream) 56px 86px,var(--w-brown) 86px 92px,var(--w-sand) 92px 126px)}
 footer{margin-top:0;background:linear-gradient(180deg,#0A3019 0%,#062213 75%)}
 footer .wrap{padding-block:48px 30px}
-.fcols{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:40px}
+.fcols{display:grid;grid-template-columns:1fr 1fr;gap:40px}
 .fcols h4{font-size:20px;color:var(--gold-l);margin-bottom:12px}
 .fb h4{font-size:30px}
 .fcols p,.fcols li{color:var(--text2);font-size:17px}
@@ -157,7 +166,7 @@ footer .wrap{padding-block:48px 30px}
 .band::before,footer::before{-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 38%,#000 62%,transparent 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 38%,#000 62%,transparent 100%)}
 footer::before{opacity:.42;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 45%,#000 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 45%,#000 100%)}
 .top .wrap{position:relative;z-index:1}
-.band{position:relative;margin-top:70px;padding-bottom:110px}
+.band{position:relative;margin-top:26px;padding-bottom:46px}
 .band .wrap{position:relative;z-index:1}
 footer{position:relative;overflow:hidden}
 footer .wrap,footer .weave{position:relative;z-index:1}
@@ -314,17 +323,23 @@ footer .wrap{padding-left:max(38px,env(safe-area-inset-left,0px));padding-right:
 
 <div class="wrap"><main>
 
-<section id="videos" style="padding-top:40px">
+<section id="videos" style="padding-top:0;margin-top:-34px">
   <div class="sec-head"><h2>الحلقات</h2><span class="note">شاهدها هنا دون مغادرة الموقع</span></div>
   <div class="vgrid" id="vgrid"></div>
 </section>
 
-<section id="shorts">
+<section id="shorts" style="padding-top:124px">
   <div class="sec-head"><h2>مقاطع السيرة</h2><button class="btn line sm more" data-feed="0">افتح المقاطع</button></div>
   <div class="srow" id="srow"></div>
+  <div class="sec-head igh"><h2>كاروسيل إنستغرام</h2><a class="btn line sm more" href="https://www.instagram.com/iufyou/" target="_blank" rel="noopener">افتح إنستغرام</a></div>
+  <div class="igrow">
+    <div class="igc"><iframe src="https://www.instagram.com/p/DejF8aSiG5-/embed/" loading="lazy" scrolling="no" title="كاروسيل إنستغرام" allowtransparency="true"></iframe></div>
+    <div class="igc"><iframe src="https://www.instagram.com/p/Ded8WyRiBcF/embed/" loading="lazy" scrolling="no" title="كاروسيل إنستغرام" allowtransparency="true"></iframe></div>
+    <div class="igc"><iframe src="https://www.instagram.com/p/DeblTROCHaQ/embed/" loading="lazy" scrolling="no" title="كاروسيل إنستغرام" allowtransparency="true"></iframe></div>
+  </div>
 </section>
 
-<section id="about">
+<section id="about" style="padding-top:124px">
   <div class="about"><div class="in">
     <div>
       <h2>عن القناة</h2>
@@ -342,14 +357,17 @@ footer .wrap{padding-left:max(38px,env(safe-area-inset-left,0px));padding-right:
 
 </main></div>
 <div class="band"><div class="wrap"><main>
-<section id="accounts">
+<section id="accounts" style="padding-top:128px">
   <div class="sec-head"><h2>حساباتنا</h2></div>
+  <div class="accrow">
   <div class="g5a">
     <a class="acct yt" href="https://www.youtube.com/@IUF.U" target="_blank" rel="noopener" aria-label="يوتيوب"><i><svg viewBox="0 0 24 24"><path fill="#E02020" stroke="none" d="M21.6 7.2a2.5 2.5 0 00-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.5 2.5 0 002.4 7.2C2 8.8 2 12 2 12s0 3.2.4 4.8a2.5 2.5 0 001.8 1.8C5.8 19 12 19 12 19s6.200 0 7.800-.4a2.500 2.500 0 001.800-1.800C22 15.200 22 12 22 12s0-3.200-.4-4.800z"/><path fill="#fff" stroke="none" d="M10 9v6l5.200-3z"/></svg></i></a>
     <a class="acct fb" href="https://www.facebook.com/IUForU" target="_blank" rel="noopener" aria-label="فيسبوك"><i><svg viewBox="0 0 24 24"><path fill="#1877F2" stroke="none" d="M14 8.500V6.800c0-.8.2-1.300 1.400-1.300H17V2.200C16.700 2.200 15.700 2 14.600 2 12.100 2 10.500 3.500 10.500 6.200v2.300H8v3.500h2.500V22H14V12h2.700l.4-3.500z"/></svg></i></a>
     <a class="acct ig" href="https://www.instagram.com/iufyou/" target="_blank" rel="noopener" aria-label="إنستغرام"><i><svg viewBox="0 0 24 24" style="stroke:#C13584"><rect x="4" y="4" width="16" height="16" rx="5"/><circle cx="12" cy="12" r="3.6"/><circle cx="16.8" cy="7.2" r=".8" fill="#C13584"/></svg></i></a>
     <a class="acct tt" href="https://www.tiktok.com/@islamic.universe4u" target="_blank" rel="noopener" aria-label="تيك توك"><i><svg viewBox="0 0 24 24"><path fill="#25F4EE" stroke="none" d="M13.200 3v11.300a2.700 2.700 0 11-2.700-2.700c.3 0 .5 0 .8.100V8.200a6 6 0 105.200 6V9.200a6.600 6.600 0 003.800 1.200V7.100a3.800 3.800 0 01-3.800-4.100z" transform="translate(-.8 .5)"/><path fill="#FE2C55" stroke="none" d="M13.200 3v11.300a2.700 2.700 0 11-2.700-2.700c.3 0 .5 0 .8.100V8.200a6 6 0 105.200 6V9.200a6.600 6.600 0 003.800 1.200V7.100a3.800 3.800 0 01-3.800-4.100z" transform="translate(.8 -.5)"/><path fill="#111" stroke="none" d="M13.200 3v11.300a2.700 2.700 0 11-2.700-2.700c.3 0 .5 0 .8.100V8.200a6 6 0 105.200 6V9.200a6.600 6.600 0 003.800 1.200V7.100a3.800 3.800 0 01-3.800-4.100z"/></svg></i></a>
     <a class="acct pn" href="https://uk.pinterest.com/islamicuniverse4u" target="_blank" rel="noopener" aria-label="بنتريست"><i><svg viewBox="0 0 24 24"><path fill="#E60023" stroke="none" d="M12 2a10 10 0 00-3.600 19.300c-.1-.8-.2-2 0-2.900l1.200-5s-.3-.6-.3-1.500c0-1.400.8-2.400 1.800-2.400.9 0 1.300.6 1.300 1.400 0 .9-.5 2.100-.8 3.300-.2 1 .5 1.800 1.500 1.800 1.800 0 3.200-1.900 3.200-4.600 0-2.400-1.700-4.100-4.200-4.100-2.900 0-4.600 2.200-4.600 4.400 0 .9.300 1.800.8 2.300.1.100.1.200.1.300l-.3 1.100c0 .2-.1.200-.3.100-1.300-.6-2.100-2.500-2.100-4 0-3.300 2.400-6.300 6.900-6.300 3.600 0 6.400 2.600 6.400 6 0 3.600-2.300 6.500-5.400 6.500-1.100 0-2.100-.5-2.400-1.200l-.7 2.500c-.2.900-.9 2.100-1.300 2.800A10 10 0 1012 2z"/></svg></i></a>
+  </div>
+  <div class="fb bcard"><h4>صفحات من نور</h4><p>حكايات من السيرة والتاريخ الإسلامي بالفصحى وبمصادرها.</p><p style="margin-top:10px">اللهم صلِّ وسلِّم على نبينا محمد ﷺ</p></div>
   </div>
 </section>
 
@@ -359,7 +377,6 @@ footer .wrap{padding-left:max(38px,env(safe-area-inset-left,0px));padding-right:
   <div class="weave"></div>
   <div class="wrap">
     <div class="fcols">
-      <div class="fb"><h4>صفحات من نور</h4><p>حكايات من السيرة والتاريخ الإسلامي بالفصحى وبمصادرها.</p><p style="margin-top:10px">اللهم صلِّ وسلِّم على نبينا محمد ﷺ</p></div>
       <div><h4>روابط</h4><ul><li><a href="#top">الرئيسية</a></li><li><a href="#videos">الحلقات</a></li><li><a href="#shorts" data-feed="0">مقاطع السيرة</a></li><li><a href="#about">عن القناة</a></li></ul></div>
       <div><h4>حساباتنا</h4><ul><li>يوتيوب</li><li>فيسبوك</li><li>إنستغرام</li><li>تيك توك</li><li>بنتريست</li></ul></div>
     </div>
@@ -397,7 +414,8 @@ footer .wrap{padding-left:max(38px,env(safe-area-inset-left,0px));padding-right:
 var VIDEOS=[
  {id:'Xq8omR68XPA',t:'ابن عمّ النبي ﷺ… يمشي إليه وهو يظن أنه مقتول | فتح مكة'},
  {id:'p5iu-Mm7_OA',t:'الصحابي الأعرج الذي أبى إلا الجنة | قصة عمرو بن الجموح يوم أُحد'},
- {id:'_SAfUZGWNUA',t:'رجلٌ واحد… طارده ثمانية في ظلام مكة | قصة مرثد الغنوي'}
+ {id:'_SAfUZGWNUA',t:'رجلٌ واحد… طارده ثمانية في ظلام مكة | قصة مرثد الغنوي'},
+ {id:'CWnFNAsYqFY',t:'هرب إلى البحر… فلحقه الرجل الذي أرسله لقتل النبي ﷺ | صفوان بن أمية'}
 ];
 var SHORTS=[
  {id:'-CPlQ42lvuo',t:'موقف الأنصار بعد غنائم حنين | لماذا أعطى النبي قريش وتركهم؟'},
@@ -420,11 +438,29 @@ function thumb(id,big){
 }
 
 /* ---- render ---- */
-var m=VIDEOS[0];
-$('vgrid').innerHTML=
- '<article class="card vmain"><a class="ph" href="https://youtu.be/'+m.id+'" data-vid="'+m.id+'">'+thumb(m.id,true)+'<span class="pb"></span></a><div class="cap"><h3>'+esc(m.t)+'</h3><button class="btn solid sm" data-vid="'+m.id+'">شاهد الآن</button></div></article>'+
- '<div class="vstack">'+VIDEOS.slice(1).map(function(v){return '<a class="card vside" href="https://youtu.be/'+v.id+'" data-vid="'+v.id+'"><div class="ph">'+thumb(v.id,true)+'<span class="pb"></span></div><div class="cap"><h3>'+esc(v.t)+'</h3></div></a>'}).join('')+'</div>';
+function vcard(v){return '<a class="card vside" href="https://youtu.be/'+v.id+'" data-vid="'+v.id+'"><div class="ph">'+thumb(v.id,true)+'<span class="pb"></span></div><div class="cap"><h3>'+esc(v.t)+'</h3></div></a>'}
+$('vgrid').innerHTML='<div class="vstack">'+vcard(VIDEOS[0])+vcard(VIDEOS[3])+'</div><div class="vstack">'+vcard(VIDEOS[1])+vcard(VIDEOS[2])+'</div>';
 $('srow').innerHTML=SHORTS.map(function(v,i){return '<a class="short" href="https://youtube.com/shorts/'+v.id+'" data-feed="'+i+'">'+thumb(v.id)+'<div class="fade"></div><span class="pb"></span><span class="over">'+esc(v.t.split('|')[0])+'</span></a>'}).join('');
+
+/* ---- conveyor ---- */
+(function(){
+  var r=$('srow');
+  if(!r||(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches))return;
+  var n=r.children.length;r.innerHTML+=r.innerHTML;
+  var pos=0,last=0,hold=false,t;
+  function half(){return Math.abs(r.children[n].offsetLeft-r.children[0].offsetLeft)}
+  function pause(){hold=true;clearTimeout(t)}
+  function resume(d){clearTimeout(t);t=setTimeout(function(){hold=false},d||2200)}
+  r.addEventListener('mouseenter',pause);r.addEventListener('mouseleave',function(){resume(400)});
+  r.addEventListener('touchstart',pause,{passive:true});r.addEventListener('touchend',function(){resume()},{passive:true});
+  r.addEventListener('wheel',function(){pause();resume()},{passive:true});
+  function step(ts){
+    var dt=last?Math.min(ts-last,60):16;last=ts;
+    if(hold){pos=Math.abs(r.scrollLeft)}
+    else{pos+=dt*0.045;var h=half();if(h&&pos>=h)pos-=h;r.scrollLeft=-pos;if(r.scrollLeft>0)r.scrollLeft=pos}
+    requestAnimationFrame(step)}
+  requestAnimationFrame(step);
+})();
 
 /* ---- helpers ---- */
 var toastT;
