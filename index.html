@@ -138,9 +138,11 @@ a:hover .pb::before{border-left-color:#1b1407}
 .acct{padding:0}
 .acct i{width:74px;height:74px;background:#fff;border:0;box-shadow:0 4px 16px rgba(0,0,0,.35)}
 .acct i svg{width:38px;height:38px}
-.g5a{display:flex;flex-wrap:wrap;justify-content:flex-start;gap:26px}
-.accrow{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:34px}
-.bcard{max-width:430px;padding:22px 28px;border-radius:20px;background:linear-gradient(155deg,rgba(18,84,45,.93) 0%,rgba(9,46,25,.95) 45%,rgba(4,24,13,.97) 100%);border:1px solid var(--line);box-shadow:var(--shadow)}
+.g5a{display:flex;flex-wrap:wrap;justify-content:flex-start;gap:26px;flex:none}
+@media(max-width:1000px){.g5a{gap:14px}.acct i{width:62px!important;height:62px!important}}
+@media(max-width:700px){.accrow{flex-wrap:wrap}}
+.accrow{display:flex;flex-wrap:nowrap;align-items:center;justify-content:space-between;gap:34px}
+.bcard{flex:1 1 260px;max-width:430px;margin-right:auto;padding:22px 28px;border-radius:20px;background:linear-gradient(155deg,rgba(18,84,45,.93) 0%,rgba(9,46,25,.95) 45%,rgba(4,24,13,.97) 100%);border:1px solid var(--line);box-shadow:var(--shadow)}
 .bcard h4{font-size:22px;color:var(--gold-l);margin-bottom:10px}
 .bcard p{margin:0;color:var(--text2);font-size:17px}
 .acct:hover{transform:translateY(-3px)}
@@ -341,7 +343,7 @@ footer .wrap{padding-left:max(38px,env(safe-area-inset-left,0px));padding-right:
   <div class="igrow" id="igrow"></div>
 </section>
 
-<section id="about" style="padding-top:150px">
+<section id="about" style="padding-top:200px">
   <div class="about"><div class="in">
     <div>
       <h2>عن القناة</h2>
@@ -447,7 +449,7 @@ var SHORTS=[
  {id:'KQcbql466jQ',t:'حمزة يدخل نادي قريش ويصعق أبا جهل بضربة القوس'},
  {id:'Fxjy3lOaZPA',t:'واجه 7 رجال… ثم سقط | قصة لن تُنسى'}
 ];
-var CAROUSELS=['DejF8aSiG5-','Ded8WyRiBcF','DeblTROCHaQ'];
+var CAROUSELS=['https://www.instagram.com/p/DejF8aSiG5-/embed/', 'https://www.instagram.com/p/Ded8WyRiBcF/embed/', 'https://www.instagram.com/p/DeblTROCHaQ/embed/', 'https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2F122128596189272252%2Fposts%2F122129097111272252&show_text=false&width=340', 'https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2F122128596189272252%2Fposts%2F122128917255272252&show_text=false&width=340', 'https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2F122128596189272252%2Fposts%2F122128830213272252&show_text=false&width=340', 'https://www.instagram.com/p/DeWh1H8iNr1/embed/', 'https://www.instagram.com/p/DeWUGMTCN5k/embed/'];
 var $=function(i){return document.getElementById(i)};
 var esc=function(x){return String(x).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
 var IMG='https://i.ytimg.com/vi/';
@@ -461,7 +463,7 @@ $('vgrid').innerHTML='<div class="vstack">'+vcard(VIDEOS[0])+vcard(VIDEOS[3])+'<
 $('srow').innerHTML=SHORTS.map(function(v,i){return '<a class="short" href="https://youtube.com/shorts/'+v.id+'" data-feed="'+i+'">'+thumb(v.id)+'<div class="fade"></div><span class="pb"></span><span class="over">'+esc(v.t.split('|')[0])+'</span></a>'}).join('');
 
 /* ---- carousels ---- */
-$('igrow').innerHTML=CAROUSELS.map(function(c){return '<div class="igc"><iframe src="https://www.instagram.com/p/'+c+'/embed/" loading="lazy" scrolling="no" title="كاروسيل إنستغرام" allowtransparency="true"></iframe></div>'}).join('');
+$('igrow').innerHTML=CAROUSELS.map(function(c){return '<div class="igc"><iframe src="'+esc(c)+'" loading="lazy" scrolling="no" title="كاروسيل إنستغرام" allowtransparency="true"></iframe></div>'}).join('');
 function fitIg(){var l=document.querySelectorAll('.igc');for(var i=0;i<l.length;i++){var w=l[i].clientWidth,k=Math.min(1,w/340),f=l[i].firstChild;f.style.transform='scale('+k+')';l[i].style.height=Math.round(600*k)+'px'}}
 fitIg();addEventListener('resize',fitIg);
 
