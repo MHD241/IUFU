@@ -122,6 +122,9 @@ a:hover .pb::before{border-left-color:#1b1407}
 .igrow{display:flex;gap:20px;overflow-x:auto;padding:6px 4px 22px;margin-inline:-4px;scrollbar-color:var(--raised) transparent}
 .igc{flex:0 0 196px}
 .igc{border-radius:16px;overflow:hidden;background:radial-gradient(circle at 30% 25%,#1a6e3b,#0D3D21 70%);border:1px solid var(--line);box-shadow:var(--shadow);position:relative}
+.igo{position:absolute;inset:0;z-index:2;cursor:pointer;touch-action:pan-x;-webkit-tap-highlight-color:transparent}
+.igc.on .igo{display:none}
+.igc.on{outline:2px solid var(--gold);outline-offset:-2px}
 .igc iframe{display:block;width:340px;height:600px;border:0;transform-origin:top right;position:absolute;top:0;right:0}
 
 
@@ -419,42 +422,12 @@ footer .wrap{padding-left:max(38px,env(safe-area-inset-left,0px));padding-right:
   <div class="toast" id="toast" hidden></div>
 </div>
 
+<script src="content.js"></script>
 <script>
 (function(){
-var VIDEOS=[
- {id:'Xq8omR68XPA',t:'ابن عمّ النبي ﷺ… يمشي إليه وهو يظن أنه مقتول | فتح مكة'},
- {id:'p5iu-Mm7_OA',t:'الصحابي الأعرج الذي أبى إلا الجنة | قصة عمرو بن الجموح يوم أُحد'},
- {id:'_SAfUZGWNUA',t:'رجلٌ واحد… طارده ثمانية في ظلام مكة | قصة مرثد الغنوي'},
- {id:'CWnFNAsYqFY',t:'هرب إلى البحر… فلحقه الرجل الذي أرسله لقتل النبي ﷺ | صفوان بن أمية'}
-];
-var SHORTS=[
- {id:'Qs-8qlUyhh4',t:'رجلٌ أُهدر دمه… فهرب إلى البحر | عكرمة بن أبي جهل'},
- {id:'CWnFNAsYqFY',t:'هرب إلى البحر… فلحقه الرجل الذي أرسله لقتل النبي ﷺ | صفوان بن أمية'},
- {id:'OrLH9qeOWzk',t:'امرأة تكلّمت… فأنزل الله فيها قرآناً يُتلى إلى يوم القيامة'},
- {id:'Lqy0xcnxCN8',t:'خمسةٌ عند حصنه في جوف الليل… | كعب بن الأشرف ج2'},
- {id:'yv27XQM_A7Y',t:'يتيمٌ اتهم زوجَ أمّه بالكفر… فنزل القرآن يحسم مَن الكاذب!'},
- {id:'O80YNITO8OU',t:'قالوا عنهم نحاف وجياع — فدخلوا مكة بكتف مكشوف أمام أعينهم | عمرة القضاء'},
- {id:'GpO2EkL3w78',t:'صدمة في صلاة الفجر… ابنة النبي تعلن الأمان لزوجها داخل المسجد'},
- {id:'wRCcBIzzn8g',t:'قلادة خديجة التي أبكت النبي في بدر… قصة لم يتوقعها أحد'},
- {id:'Mf41_VVS7Lc',t:'امرأة حمت ظهر المدينة وحدها في الخندق | صفية بنت عبد المطلب'},
- {id:'m2Bj2zA1Jzs',t:'تمرات عمير بن الحمام في بدر… لما قال: بخ بخ! ثم سبق للجنة'},
- {id:'2HZdOqBB-cg',t:'7 خرجوا للاستطلاع… و واحد اخترق جيش الفرس!'},
- {id:'zmgyQNjCZHo',t:'ثلاث مهمات سرية… والسر في اختيار الرجل المناسب'},
- {id:'zVJF8KSvWB4',t:'صحابي دخل مكة سرا لينقذ الأسرى… ثم سمع صوتا يناديه: يا مرثد'},
- {id:'k8i895dWeWo',t:'هكذا رُوِّعت زينب بنت النبي ﷺ في طريق الهجرة إلى المدينة'},
- {id:'-CPlQ42lvuo',t:'موقف الأنصار بعد غنائم حنين | لماذا أعطى النبي قريش وتركهم؟'},
- {id:'1tfraMFc6Wg',t:'أُهدر دمه يوم فتح مكة… ثم استشهد في اليرموك | قصة عكرمة بن أبي جهل'},
- {id:'yyaQJ1quoyA',t:'غلامان من الأنصار أسقطا طاغية قريش في بدر | نهاية أبي جهل المذلة'},
- {id:'bx7EfrBvI5E',t:'ردّه النبي ﷺ إلى معذبيه | وكان هذا أحكم قرار في تاريخ الإسلام'},
- {id:'OXk8ttL8VgE',t:'رجُلٌ واحدٌ… حماهُ اللهُ بَعدَ موْتِهِ | سرية الرجيع'},
- {id:'FlgBzF22fTk',t:'شاعرٌ آذى النبي ﷺ… فقام له رجلٌ واحد | كعب بن الأشرف ج1'},
- {id:'MNSDFXihvbw',t:'زعيم قريش… وقف في الوادي فمرّت عليه كتائب لم يرَ مثلها | فتح مكة (1)'},
- {id:'LhOZdzaMn68',t:'صرخة عكرمة في اليرموك… من يبايع على الموت؟'},
- {id:'aEa86onX4_A',t:'كيف بك إذا لبست سوارِي كسرى؟ وعد في الصحراء تحقق بعد سنين'},
- {id:'KQcbql466jQ',t:'حمزة يدخل نادي قريش ويصعق أبا جهل بضربة القوس'},
- {id:'Fxjy3lOaZPA',t:'واجه 7 رجال… ثم سقط | قصة لن تُنسى'}
-];
-var CAROUSELS=['https://www.instagram.com/p/DejF8aSiG5-/embed/', 'https://www.instagram.com/p/Ded8WyRiBcF/embed/', 'https://www.instagram.com/p/DeblTROCHaQ/embed/', 'https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2F122128596189272252%2Fposts%2F122129097111272252&show_text=false&width=340', 'https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2F122128596189272252%2Fposts%2F122128917255272252&show_text=false&width=340', 'https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2F122128596189272252%2Fposts%2F122128830213272252&show_text=false&width=340', 'https://www.instagram.com/p/DeWh1H8iNr1/embed/', 'https://www.instagram.com/p/DeWUGMTCN5k/embed/'];
+var VIDEOS=SITE.videos;
+var SHORTS=SITE.shorts;
+var CAROUSELS=SITE.carousels;
 var $=function(i){return document.getElementById(i)};
 var esc=function(x){return String(x).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
 var IMG='https://i.ytimg.com/vi/';
@@ -468,7 +441,7 @@ $('vgrid').innerHTML='<div class="vstack">'+vcard(VIDEOS[0])+vcard(VIDEOS[3])+'<
 $('srow').innerHTML=SHORTS.map(function(v,i){return '<a class="short" href="https://youtube.com/shorts/'+v.id+'" data-feed="'+i+'">'+thumb(v.id)+'<div class="fade"></div><span class="pb"></span><span class="over">'+esc(v.t.split('|')[0])+'</span></a>'}).join('');
 
 /* ---- carousels ---- */
-$('igrow').innerHTML=CAROUSELS.map(function(c){return '<div class="igc"><iframe src="'+esc(c)+'" loading="lazy" scrolling="no" title="كاروسيل إنستغرام" allowtransparency="true"></iframe></div>'}).join('');
+$('igrow').innerHTML=CAROUSELS.map(function(c){return '<div class="igc" data-u="'+esc(c.u)+'"><iframe src="'+esc(c.e)+'" loading="lazy" scrolling="no" title="كاروسيل" allowtransparency="true"></iframe><div class="igo" aria-label="اضغط للإيقاف، ومرتين للفتح"></div></div>'}).join('');
 function fitIg(){var l=document.querySelectorAll('.igc');for(var i=0;i<l.length;i++){var w=l[i].clientWidth,k=Math.min(1,w/340),f=l[i].firstChild;f.style.transform='scale('+k+')';l[i].style.height=Math.round(600*k)+'px'}}
 fitIg();addEventListener('resize',fitIg);
 
@@ -480,10 +453,10 @@ function conveyor(id,dir){
   var pos=0,last=0,hold=false,t;
   function half(){return Math.abs(r.children[n].offsetLeft-r.children[0].offsetLeft)}
   function pause(){hold=true;clearTimeout(t)}
-  function resume(d){clearTimeout(t);t=setTimeout(function(){hold=false},d||2200)}
+  function resume(d){clearTimeout(t);if(hard)return;t=setTimeout(function(){hold=false},d||2200)}
   r.addEventListener('touchstart',pause,{passive:true});r.addEventListener('touchend',function(){resume()},{passive:true});
   r.addEventListener('wheel',function(){pause();resume()},{passive:true});
-  var started=false;
+  var hard=false,started=false;
   function step(ts){
     var dt=last?Math.min(ts-last,60):16;last=ts,h=half();
     if(!started&&h){started=true;if(dir<0){pos=h-1;r.scrollLeft=-pos}}
@@ -491,9 +464,27 @@ function conveyor(id,dir){
     else if(h){pos+=dir*dt*0.045;if(pos>=h)pos-=h;if(pos<=0)pos+=h;r.scrollLeft=-pos}
     requestAnimationFrame(step)}
   var h=0;requestAnimationFrame(step);
+  return {stop:function(){hard=true;pause()},go:function(){hard=false;resume(500)}};
 }
 conveyor('srow',1);
-conveyor('igrow',-1);
+var igc=conveyor('igrow',-1);
+
+/* carousels: tap = stop, double tap = open, then swipe inside freely */
+(function(){
+  var r=$('igrow'),act=null,lastC=null,lastT=0,tm=0,sx=0,sy=0,st=0;
+  function release(){if(act){act.classList.remove('on');act=null}if(igc)igc.go()}
+  r.addEventListener('pointerdown',function(e){var o=e.target.closest&&e.target.closest('.igo');if(!o)return;sx=e.clientX;sy=e.clientY;st=Date.now()});
+  r.addEventListener('pointerup',function(e){
+    var o=e.target.closest&&e.target.closest('.igo');if(!o)return;
+    if(Math.abs(e.clientX-sx)>10||Math.abs(e.clientY-sy)>10||Date.now()-st>400)return;
+    var c=o.parentNode,now=Date.now();
+    if(act&&act!==c){act.classList.remove('on');act=null}
+    if(lastC===c&&now-lastT<380){clearTimeout(tm);lastC=null;window.open(c.getAttribute('data-u'),'_blank','noopener');if(igc)igc.go();return}
+    lastC=c;lastT=now;if(igc)igc.stop();
+    clearTimeout(tm);tm=setTimeout(function(){c.classList.add('on');act=c},390)});
+  document.addEventListener('pointerdown',function(e){if(act&&!(e.target.closest&&e.target.closest('.igc.on'))&&!(e.target.closest&&e.target.closest('.igo')))release()},true);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')release()});
+})();
 
 /* ---- helpers ---- */
 var toastT;
