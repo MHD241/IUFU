@@ -128,8 +128,9 @@ a:hover .pb::before{border-left-color:#1b1407}
 
 /* accounts */
 .g5a{display:grid;grid-template-columns:repeat(5,1fr);gap:22px}
-.acct{padding:26px 16px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.acct{color:inherit;text-decoration:none;transition:transform .25s;padding:26px 16px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
 .acct i{width:60px;height:60px;border-radius:50%;background:var(--raised);border:1px solid var(--line);display:grid;place-items:center;color:var(--text);font-style:normal;font-family:var(--f-display);font-size:28px}
+.acct:hover{transform:translateY(-3px)}
 .acct svg{width:30px;height:30px;stroke:var(--text);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .acct b{font-family:var(--f-display);font-size:21px;font-weight:800}
 
@@ -340,11 +341,11 @@ footer .wrap{padding-left:max(38px,env(safe-area-inset-left,0px));padding-right:
 <section id="accounts">
   <div class="sec-head"><h2>حساباتنا</h2></div>
   <div class="g5a">
-    <div class="card acct"><i><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="4"/><path d="M10 9.5v5l4.5-2.5z"/></svg></i><b>يوتيوب</b></div>
-    <div class="card acct"><i>f</i><b>فيسبوك</b></div>
-    <div class="card acct"><i><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="5"/><circle cx="12" cy="12" r="3.6"/><circle cx="16.8" cy="7.2" r=".6"/></svg></i><b>إنستغرام</b></div>
-    <div class="card acct"><i><svg viewBox="0 0 24 24"><path d="M14 4v10.5a3.5 3.5 0 11-3.5-3.5"/><path d="M14 4c.4 2.4 2 4 4.5 4.2"/></svg></i><b>تيك توك</b></div>
-    <div class="card acct"><i>P</i><b>بنتريست</b></div>
+    <a class="card acct" href="https://www.youtube.com/@IUF.U" target="_blank" rel="noopener"><i><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="4"/><path d="M10 9.5v5l4.5-2.5z"/></svg></i><b>يوتيوب</b></a>
+    <a class="card acct" href="https://www.facebook.com/IUForU" target="_blank" rel="noopener"><i>f</i><b>فيسبوك</b></a>
+    <a class="card acct" href="https://www.instagram.com/iufyou/" target="_blank" rel="noopener"><i><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="5"/><circle cx="12" cy="12" r="3.6"/><circle cx="16.8" cy="7.2" r=".6"/></svg></i><b>إنستغرام</b></a>
+    <a class="card acct" href="https://www.tiktok.com/@islamic.universe4u" target="_blank" rel="noopener"><i><svg viewBox="0 0 24 24"><path d="M14 4v10.5a3.5 3.5 0 11-3.5-3.5"/><path d="M14 4c.4 2.4 2 4 4.5 4.2"/></svg></i><b>تيك توك</b></a>
+    <a class="card acct" href="https://uk.pinterest.com/islamicuniverse4u" target="_blank" rel="noopener"><i>P</i><b>بنتريست</b></a>
   </div>
 </section>
 
