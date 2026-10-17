@@ -115,10 +115,10 @@ a:hover .pb::before{border-left-color:#1b1407}
 .short .over{position:absolute;z-index:2;inset:auto 14px 16px;font-family:var(--f-display);font-size:17px;line-height:1.5}
 .short .pb{width:48px;height:48px}
 .igh{margin-top:46px}
-.igrow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
-.igc{border-radius:18px;overflow:hidden;background:radial-gradient(circle at 30% 25%,#1a6e3b,#0D3D21 70%);border:1px solid var(--line);box-shadow:var(--shadow)}
-.igc iframe{display:block;width:100%;height:620px;border:0}
-@media(max-width:900px){.igrow{grid-template-columns:1fr;max-width:420px;margin-inline:auto}}
+.igrow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.igc{border-radius:16px;overflow:hidden;background:radial-gradient(circle at 30% 25%,#1a6e3b,#0D3D21 70%);border:1px solid var(--line);box-shadow:var(--shadow);position:relative}
+.igc iframe{display:block;width:340px;height:600px;border:0;transform-origin:top right;position:absolute;top:0;right:0}
+@media(max-width:900px){.igrow{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
 /* about */
 .about{border:1px solid var(--line);border-radius:28px;background:linear-gradient(135deg,#0D3D21,#145A31);position:relative;overflow:hidden;box-shadow:var(--shadow)}
@@ -155,6 +155,10 @@ footer .wrap{padding-block:48px 30px}
 .fcols h4{font-size:20px;color:var(--gold-l);margin-bottom:12px}
 .fb h4{font-size:30px}
 .fcols p,.fcols li{color:var(--text2);font-size:17px}
+.fcols ul.two{grid-template-columns:1fr 1fr;gap:10px 20px}
+.fcols ul.hnd a{display:flex;justify-content:space-between;gap:14px;align-items:baseline}
+.fcols ul.hnd em{font-style:normal;direction:ltr;color:var(--gold-l);font-size:15px;opacity:.9}
+.fcols .salat{margin-top:18px;color:var(--gold-l);font-size:16px}
 .fcols ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
 .fcols a:hover{color:var(--gold-l)}
 .strip{margin-top:34px;padding-top:20px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:15px;color:var(--text2)}
@@ -166,7 +170,9 @@ footer .wrap{padding-block:48px 30px}
 .band::before,footer::before{-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 38%,#000 62%,transparent 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 38%,#000 62%,transparent 100%)}
 footer::before{opacity:.42;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 45%,#000 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 45%,#000 100%)}
 .top .wrap{position:relative;z-index:1}
-.band{position:relative;margin-top:26px;padding-bottom:46px}
+.band{position:relative;margin-top:26px;padding-bottom:30px}
+#accounts .sec-head{margin-bottom:4px}
+.g5a{margin-top:22px}
 .band .wrap{position:relative;z-index:1}
 footer{position:relative;overflow:hidden}
 footer .wrap,footer .weave{position:relative;z-index:1}
@@ -332,14 +338,10 @@ footer .wrap{padding-left:max(38px,env(safe-area-inset-left,0px));padding-right:
   <div class="sec-head"><h2>مقاطع السيرة</h2><button class="btn line sm more" data-feed="0">افتح المقاطع</button></div>
   <div class="srow" id="srow"></div>
   <div class="sec-head igh"><h2>كاروسيل إنستغرام</h2><a class="btn line sm more" href="https://www.instagram.com/iufyou/" target="_blank" rel="noopener">افتح إنستغرام</a></div>
-  <div class="igrow">
-    <div class="igc"><iframe src="https://www.instagram.com/p/DejF8aSiG5-/embed/" loading="lazy" scrolling="no" title="كاروسيل إنستغرام" allowtransparency="true"></iframe></div>
-    <div class="igc"><iframe src="https://www.instagram.com/p/Ded8WyRiBcF/embed/" loading="lazy" scrolling="no" title="كاروسيل إنستغرام" allowtransparency="true"></iframe></div>
-    <div class="igc"><iframe src="https://www.instagram.com/p/DeblTROCHaQ/embed/" loading="lazy" scrolling="no" title="كاروسيل إنستغرام" allowtransparency="true"></iframe></div>
-  </div>
+  <div class="igrow" id="igrow"></div>
 </section>
 
-<section id="about" style="padding-top:124px">
+<section id="about" style="padding-top:150px">
   <div class="about"><div class="in">
     <div>
       <h2>عن القناة</h2>
@@ -357,7 +359,7 @@ footer .wrap{padding-left:max(38px,env(safe-area-inset-left,0px));padding-right:
 
 </main></div>
 <div class="band"><div class="wrap"><main>
-<section id="accounts" style="padding-top:128px">
+<section id="accounts" style="padding-top:170px">
   <div class="sec-head"><h2>حساباتنا</h2></div>
   <div class="accrow">
   <div class="g5a">
@@ -377,8 +379,9 @@ footer .wrap{padding-left:max(38px,env(safe-area-inset-left,0px));padding-right:
   <div class="weave"></div>
   <div class="wrap">
     <div class="fcols">
-      <div><h4>روابط</h4><ul><li><a href="#top">الرئيسية</a></li><li><a href="#videos">الحلقات</a></li><li><a href="#shorts" data-feed="0">مقاطع السيرة</a></li><li><a href="#about">عن القناة</a></li></ul></div>
-      <div><h4>حساباتنا</h4><ul><li>يوتيوب</li><li>فيسبوك</li><li>إنستغرام</li><li>تيك توك</li><li>بنتريست</li></ul></div>
+      <div><h4>روابط</h4><ul class="two"><li><a href="#top">الرئيسية</a></li><li><a href="#videos">الحلقات</a></li><li><a href="#shorts" data-feed="0">مقاطع السيرة</a></li><li><a href="#igrow">كاروسيل إنستغرام</a></li><li><a href="#about">عن القناة</a></li><li><a href="#accounts">حساباتنا</a></li><li><a href="#videos">أحدث الحلقات</a></li><li><a href="#top">أعلى الصفحة</a></li></ul>
+        <p class="salat">اللهم صلِّ وسلِّم على نبينا محمد ﷺ</p></div>
+      <div><h4>حساباتنا</h4><ul class="hnd"><li><a href="https://www.youtube.com/@IUF.U" target="_blank" rel="noopener"><span>يوتيوب</span><em>@IUF.U</em></a></li><li><a href="https://www.facebook.com/IUForU" target="_blank" rel="noopener"><span>فيسبوك</span><em>IUForU</em></a></li><li><a href="https://www.instagram.com/iufyou/" target="_blank" rel="noopener"><span>إنستغرام</span><em>@iufyou</em></a></li><li><a href="https://www.tiktok.com/@islamic.universe4u" target="_blank" rel="noopener"><span>تيك توك</span><em>@islamic.universe4u</em></a></li><li><a href="https://uk.pinterest.com/islamicuniverse4u" target="_blank" rel="noopener"><span>بنتريست</span><em>@islamicuniverse4u</em></a></li></ul></div>
     </div>
     <div class="strip"><span>© IUFU. جميع الحقوق محفوظة</span><span>الخصوصية · الشروط · المصادر والتوثيق</span></div>
   </div>
@@ -418,6 +421,20 @@ var VIDEOS=[
  {id:'CWnFNAsYqFY',t:'هرب إلى البحر… فلحقه الرجل الذي أرسله لقتل النبي ﷺ | صفوان بن أمية'}
 ];
 var SHORTS=[
+ {id:'Qs-8qlUyhh4',t:'رجلٌ أُهدر دمه… فهرب إلى البحر | عكرمة بن أبي جهل'},
+ {id:'CWnFNAsYqFY',t:'هرب إلى البحر… فلحقه الرجل الذي أرسله لقتل النبي ﷺ | صفوان بن أمية'},
+ {id:'OrLH9qeOWzk',t:'امرأة تكلّمت… فأنزل الله فيها قرآناً يُتلى إلى يوم القيامة'},
+ {id:'Lqy0xcnxCN8',t:'خمسةٌ عند حصنه في جوف الليل… | كعب بن الأشرف ج2'},
+ {id:'yv27XQM_A7Y',t:'يتيمٌ اتهم زوجَ أمّه بالكفر… فنزل القرآن يحسم مَن الكاذب!'},
+ {id:'O80YNITO8OU',t:'قالوا عنهم نحاف وجياع — فدخلوا مكة بكتف مكشوف أمام أعينهم | عمرة القضاء'},
+ {id:'GpO2EkL3w78',t:'صدمة في صلاة الفجر… ابنة النبي تعلن الأمان لزوجها داخل المسجد'},
+ {id:'wRCcBIzzn8g',t:'قلادة خديجة التي أبكت النبي في بدر… قصة لم يتوقعها أحد'},
+ {id:'Mf41_VVS7Lc',t:'امرأة حمت ظهر المدينة وحدها في الخندق | صفية بنت عبد المطلب'},
+ {id:'m2Bj2zA1Jzs',t:'تمرات عمير بن الحمام في بدر… لما قال: بخ بخ! ثم سبق للجنة'},
+ {id:'2HZdOqBB-cg',t:'7 خرجوا للاستطلاع… و واحد اخترق جيش الفرس!'},
+ {id:'zmgyQNjCZHo',t:'ثلاث مهمات سرية… والسر في اختيار الرجل المناسب'},
+ {id:'zVJF8KSvWB4',t:'صحابي دخل مكة سرا لينقذ الأسرى… ثم سمع صوتا يناديه: يا مرثد'},
+ {id:'k8i895dWeWo',t:'هكذا رُوِّعت زينب بنت النبي ﷺ في طريق الهجرة إلى المدينة'},
  {id:'-CPlQ42lvuo',t:'موقف الأنصار بعد غنائم حنين | لماذا أعطى النبي قريش وتركهم؟'},
  {id:'1tfraMFc6Wg',t:'أُهدر دمه يوم فتح مكة… ثم استشهد في اليرموك | قصة عكرمة بن أبي جهل'},
  {id:'yyaQJ1quoyA',t:'غلامان من الأنصار أسقطا طاغية قريش في بدر | نهاية أبي جهل المذلة'},
@@ -430,6 +447,7 @@ var SHORTS=[
  {id:'KQcbql466jQ',t:'حمزة يدخل نادي قريش ويصعق أبا جهل بضربة القوس'},
  {id:'Fxjy3lOaZPA',t:'واجه 7 رجال… ثم سقط | قصة لن تُنسى'}
 ];
+var CAROUSELS=['DejF8aSiG5-','Ded8WyRiBcF','DeblTROCHaQ'];
 var $=function(i){return document.getElementById(i)};
 var esc=function(x){return String(x).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
 var IMG='https://i.ytimg.com/vi/';
@@ -442,6 +460,11 @@ function vcard(v){return '<a class="card vside" href="https://youtu.be/'+v.id+'"
 $('vgrid').innerHTML='<div class="vstack">'+vcard(VIDEOS[0])+vcard(VIDEOS[3])+'</div><div class="vstack">'+vcard(VIDEOS[1])+vcard(VIDEOS[2])+'</div>';
 $('srow').innerHTML=SHORTS.map(function(v,i){return '<a class="short" href="https://youtube.com/shorts/'+v.id+'" data-feed="'+i+'">'+thumb(v.id)+'<div class="fade"></div><span class="pb"></span><span class="over">'+esc(v.t.split('|')[0])+'</span></a>'}).join('');
 
+/* ---- carousels ---- */
+$('igrow').innerHTML=CAROUSELS.map(function(c){return '<div class="igc"><iframe src="https://www.instagram.com/p/'+c+'/embed/" loading="lazy" scrolling="no" title="كاروسيل إنستغرام" allowtransparency="true"></iframe></div>'}).join('');
+function fitIg(){var l=document.querySelectorAll('.igc');for(var i=0;i<l.length;i++){var w=l[i].clientWidth,k=Math.min(1,w/340),f=l[i].firstChild;f.style.transform='scale('+k+')';l[i].style.height=Math.round(600*k)+'px'}}
+fitIg();addEventListener('resize',fitIg);
+
 /* ---- conveyor ---- */
 (function(){
   var r=$('srow');
@@ -451,8 +474,7 @@ $('srow').innerHTML=SHORTS.map(function(v,i){return '<a class="short" href="http
   function half(){return Math.abs(r.children[n].offsetLeft-r.children[0].offsetLeft)}
   function pause(){hold=true;clearTimeout(t)}
   function resume(d){clearTimeout(t);t=setTimeout(function(){hold=false},d||2200)}
-  r.addEventListener('mouseenter',pause);r.addEventListener('mouseleave',function(){resume(400)});
-  r.addEventListener('touchstart',pause,{passive:true});r.addEventListener('touchend',function(){resume()},{passive:true});
+    r.addEventListener('touchstart',pause,{passive:true});r.addEventListener('touchend',function(){resume()},{passive:true});
   r.addEventListener('wheel',function(){pause();resume()},{passive:true});
   function step(ts){
     var dt=last?Math.min(ts-last,60):16;last=ts;
