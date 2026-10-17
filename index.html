@@ -485,6 +485,7 @@ function loadYT(ok,fail){
   window.onYouTubeIframeAPIReady=function(){var q=ytQ;ytQ=[];q.forEach(function(p){p[0]()})};
   document.head.appendChild(s);
 }
+function isPlaying(){try{return !!player&&player.getPlayerState()===1}catch(e){return false}}
 function stopPlayer(){if(player){try{player.destroy()}catch(e){}player=null}}
 function isMutedNow(){try{return !!(player&&player.isMuted&&player.isMuted())}catch(e){return false}}
 function updSound(){
@@ -522,10 +523,14 @@ function activate(i){
         onReady:function(e){
           if(soundOn){e.target.unMute();e.target.setVolume(100)}else{e.target.mute()}
           e.target.playVideo();
-          setTimeout(updSound,700);
+          /* browsers may refuse sound autoplay: retry muted, then let a tap reach the YouTube play button */
+          setTimeout(function(){if(active!==i||!player)return;if(!isPlaying()){player.mute();player.playVideo();updSound()}},800);
+          setTimeout(function(){if(active!==i||!player)return;if(!isPlaying()){var t=$('tap');if(t)t.style.pointerEvents='none'}updSound()},1900);
         },
-        onAutoplayBlocked:function(){if(player){player.mute();player.playVideo();updSound()}},
-        onStateChange:function(e){var p=$('pi');if(p)p.hidden=(e.data!==2);if(e.data===1)updSound()}
+        onStateChange:function(e){
+          var p=$('pi');if(p)p.hidden=(e.data!==2);
+          if(e.data===1){var t=$('tap');if(t)t.style.pointerEvents='';updSound()}
+        }
       }});
   },function(){
     if(active!==i)return;
