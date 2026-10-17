@@ -1,3 +1,3 @@
-# IUFU Premium V2
+# IUFU - صفحات من نور
 
-Static RTL Arabic homepage. Open `index.html` or deploy the contents of this folder to the **root** of the GitHub Pages repository (not the enclosing folder). All eight historical scene photos are local high-quality WebP assets; do not remove the `assets` folder. Video records load from the existing Supabase public API with a local fallback. Video cards open a YouTube privacy-enhanced embed modal without leaving the page (embedding may be blocked by a video's owner or browser, in which case a YouTube link is shown). Carousel and Pinterest visuals are explicitly temporary. Logo is a vector reconstruction, not the original logo asset. No existing GitHub repository was changed.
+Static website. Open index.html or serve with GitHub Pages.
