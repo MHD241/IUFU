@@ -1,23 +1,3 @@
-# IUFU — صفحات من نور
+# IUFU Premium V2
 
-Responsive Arabic RTL static website. Built from the supplied homepage reference and emerald/gold blueprint.
-
-## Files
-- `index.html` — complete homepage
-- `styles.css` — responsive styles
-- `app.js` — Supabase public videos and UI interactions
-- `assets/hero-reference.jpg` — temporary cropped image from the user-provided blueprint (replace with approved K1/K2-based full Kaaba hero photograph)
-
-## Deployment
-Upload the contents of this folder to the root of your GitHub Pages repository. Enable GitHub Pages for the main branch/root if not already enabled. No build step required.
-
-## Data
-Public video cards fetch `public.videos` from IUFU Supabase. A local fallback includes the ten confirmed YouTube IDs. The public publishable key is safe for a browser; NEVER put a Supabase service-role or secret key in these files. Public SELECT RLS policy must allow reading published videos.
-
-## Pending assets and content
-- Replace temporary hero with approved full-width historical Kaaba artwork; current reference screenshot crop is only a visual stand-in.
-- Replace repeated start/series photographic stand-ins with separately approved original images.
-- Select actual carousel posts and Pinterest pins; placeholders deliberately do not link to invented content.
-- Add verified Instagram, TikTok, Facebook and Pinterest URLs; currently shown as unlinked placeholders.
-- Replace descriptive temporary Shorts titles with the videos' official titles once verified.
-- The website is not published automatically. No GitHub changes were made.
+Static RTL Arabic homepage. Open `index.html` or deploy the contents of this folder to the **root** of the GitHub Pages repository (not the enclosing folder). All eight historical scene photos are local high-quality WebP assets; do not remove the `assets` folder. Video records load from the existing Supabase public API with a local fallback. Video cards open a YouTube privacy-enhanced embed modal without leaving the page (embedding may be blocked by a video's owner or browser, in which case a YouTube link is shown). Carousel and Pinterest visuals are explicitly temporary. Logo is a vector reconstruction, not the original logo asset. No existing GitHub repository was changed.
