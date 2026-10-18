@@ -179,12 +179,13 @@ footer .wrap{padding-block:48px 30px}
 .hero p{font-size:18px;line-height:1.9}
 .hero h1.iu{display:flex;flex-direction:column;gap:6px;font-family:var(--f-display);line-height:1;direction:ltr;align-items:flex-end}
 .iu b{font-size:104px;font-weight:900;letter-spacing:4px;background:linear-gradient(180deg,#F3DE9A,#C9A24B 60%,#8E6A22);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 4px 14px rgba(0,0,0,.45))}
+.brand .iu-s{font-family:var(--f-display);font-size:30px;font-weight:900;letter-spacing:2px;direction:ltr;background:linear-gradient(180deg,#F3DE9A,#C9A24B 65%,#8E6A22);-webkit-background-clip:text;background-clip:text;color:transparent}
 .iu small{font-size:21px;font-weight:600;letter-spacing:3px;color:var(--gold-l)}
 .about p{text-align:justify;text-align-last:right}
 .top{background:linear-gradient(to right,rgba(20,90,49,.55) 0,rgba(6,34,19,.97) 34%,rgba(6,34,19,.97) 80%,rgba(20,90,49,.6) 100%)}
 .top::before{opacity:.5;-webkit-mask-image:none;mask-image:none}
-.band::before{-webkit-mask-image:none;mask-image:none;opacity:.5}
-.band::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:linear-gradient(to bottom,#0A3019 0,rgba(6,34,19,.55) 30%,rgba(6,34,19,.55) 70%,#0A3019 100%)}
+.band::before{-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 30%,#000 70%,transparent 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 30%,#000 70%,transparent 100%);opacity:.5}
+.band::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:linear-gradient(to bottom,transparent 0,rgba(6,34,19,.6) 30%,rgba(6,34,19,.6) 70%,transparent 100%)}
 /* pattern bands: header, under the about card, footer */
 .top::before,.band::before,footer::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:url(img/pattern.jpg) center top/340px repeat;opacity:.5}
 .top::before{opacity:.38;-webkit-mask-image:linear-gradient(to right,transparent,#000 18%,#000 82%,transparent);mask-image:linear-gradient(to right,transparent,#000 18%,#000 82%,transparent)}
@@ -323,7 +324,7 @@ footer .wrap{padding-left:max(38px,env(safe-area-inset-left,0px));padding-right:
 
 <header class="top">
   <div class="wrap">
-    <a class="brand" href="#top" aria-label="IUFU"><img src="img/p6.jpg" alt="شعار IUFU"><img class="ttl-s" src="img/title-s.png" alt="صفحات من نور"></a>
+    <a class="brand" href="#top" aria-label="IUFU"><img src="img/p6.jpg" alt="شعار IUFU"><b class="iu-s">IUFU</b></a>
     <nav class="nav" aria-label="القائمة الرئيسية">
       <a href="#top">الرئيسية</a><a href="#videos">الحلقات</a><a href="#shorts" data-feed="0">مقاطع السيرة</a><a href="#about">عن القناة</a><a href="#accounts">حساباتنا</a>
     </nav>
