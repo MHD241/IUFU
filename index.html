@@ -174,6 +174,17 @@ footer .wrap{padding-block:48px 30px}
 .strip{margin-top:34px;padding-top:20px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:15px;color:var(--text2)}
 
 
+.hero-img{width:62%}
+.hero-copy{width:min(400px,100%)}
+.hero p{font-size:18px;line-height:1.9}
+.hero h1.iu{display:flex;flex-direction:column;gap:6px;font-family:var(--f-display);line-height:1;direction:ltr;align-items:flex-end}
+.iu b{font-size:104px;font-weight:900;letter-spacing:4px;background:linear-gradient(180deg,#F3DE9A,#C9A24B 60%,#8E6A22);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 4px 14px rgba(0,0,0,.45))}
+.iu small{font-size:21px;font-weight:600;letter-spacing:3px;color:var(--gold-l)}
+.about p{text-align:justify;text-align-last:right}
+.top{background:linear-gradient(to right,rgba(20,90,49,.55) 0,rgba(6,34,19,.97) 34%,rgba(6,34,19,.97) 80%,rgba(20,90,49,.6) 100%)}
+.top::before{opacity:.5;-webkit-mask-image:none;mask-image:none}
+.band::before{-webkit-mask-image:none;mask-image:none;opacity:.5}
+.band::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:linear-gradient(to bottom,#0A3019 0,rgba(6,34,19,.55) 30%,rgba(6,34,19,.55) 70%,#0A3019 100%)}
 /* pattern bands: header, under the about card, footer */
 .top::before,.band::before,footer::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:url(img/pattern.jpg) center top/340px repeat;opacity:.5}
 .top::before{opacity:.38;-webkit-mask-image:linear-gradient(to right,transparent,#000 18%,#000 82%,transparent);mask-image:linear-gradient(to right,transparent,#000 18%,#000 82%,transparent)}
@@ -310,8 +321,6 @@ footer .wrap{padding-left:max(38px,env(safe-area-inset-left,0px));padding-right:
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 
-</head>
-<body>
 <header class="top">
   <div class="wrap">
     <a class="brand" href="#top" aria-label="IUFU"><img src="img/p6.jpg" alt="شعار IUFU"><img class="ttl-s" src="img/title-s.png" alt="صفحات من نور"></a>
@@ -327,7 +336,7 @@ footer .wrap{padding-left:max(38px,env(safe-area-inset-left,0px));padding-right:
   <div class="wrap">
     <div class="hero-copy">
       <span class="hello">أهلًا بك… اجلس واستمع</span>
-      <h1><img class="ttl" src="img/title.png" alt="صفحات من نور"></h1>
+      <h1 class="iu"><b>IUFU</b><small>Islamic Universe For You</small></h1>
       <p>حكايات من السيرة والتاريخ الإسلامي بالفصحى وبمصادرها، تُروى بهدوء.</p>
       <div class="hero-actions">
         <button class="btn solid" data-vid="Xq8omR68XPA"><svg viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></svg>ابدأ المشاهدة</button>
@@ -347,7 +356,7 @@ footer .wrap{padding-left:max(38px,env(safe-area-inset-left,0px));padding-right:
 <section id="shorts" style="padding-top:124px">
   <div class="sec-head"><h2>مقاطع السيرة</h2><button class="btn line sm more" data-feed="0">افتح المقاطع</button></div>
   <div class="srow" id="srow"></div>
-  <div class="sec-head igh"><h2><img class="ttl-h" src="img/title-s.png" alt="صفحات من نور"></h2><a class="btn line sm more" href="https://www.instagram.com/iufyou/" target="_blank" rel="noopener">افتح إنستغرام</a></div>
+  <div class="sec-head igh"><h2><img class="ttl-h" src="img/title-s.png" alt="صفحات من نور"></h2></div>
   <div class="igrow" id="igrow"></div>
 </section>
 
