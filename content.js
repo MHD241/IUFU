@@ -1,25 +1,37 @@
 /* IUFU site content. Newest first. Edited by hand or by the Metricool sync task. */
 window.SITE={
- updated:"2026-10-17",
+ updated:"2026-10-18",
  videos:[
  {
   "id": "Xq8omR68XPA",
   "t": "ابن عمّ النبي ﷺ… يمشي إليه وهو يظن أنه مقتول | فتح مكة"
  },
  {
-  "id": "p5iu-Mm7_OA",
-  "t": "الصحابي الأعرج الذي أبى إلا الجنة | قصة عمرو بن الجموح يوم أُحد"
+  "id": "0NCZu4O77Fg",
+  "t": "جاء بسيفٍ مسموم… فخرج يدعو إلى دينه | عمير بن وهب ج2"
  },
  {
-  "id": "_SAfUZGWNUA",
-  "t": "رجلٌ واحد… طارده ثمانية في ظلام مكة | قصة مرثد الغنوي"
+  "id": "8FhxOXpkTac",
+  "t": "من السطر إلى المشهد… هكذا تُروى قصص السيرة | IUFU"
  },
  {
-  "id": "qwNZ_8YtVUA",
-  "t": "معركة بدر: حين وجد المسلمون أنفسهم أمام جيش قريش الذي يقارب الألف"
+  "id": "HzojEMdR8jI",
+  "t": "شاعرٌ آذى النبي ﷺ… فأُتِيَ من حيث يأمن | كعب بن الأشرف"
  }
 ],
  shorts:[
+ {
+  "id": "i3gxgEe_OO4",
+  "t": "سيفٌ مسموم لقتل النبي ﷺ… والمؤامرة بدأت عند الكعبة | عمير بن وهب"
+ },
+ {
+  "id": "l2wzr-70KxE",
+  "t": "أسيران في مكة… شهد لهما أعداؤهما | خبيب بن عدي وزيد بن الدثنة - الرجيع"
+ },
+ {
+  "id": "auPOeag8XMI",
+  "t": "ماذا وجدوا في قبر عمرو بن الجموح بعد سنوات؟ قصة تهز القلب!"
+ },
  {
   "id": "Qs-8qlUyhh4",
   "t": "رجلٌ أُهدر دمه… فهرب إلى البحر | عكرمة بن أبي جهل"
@@ -122,6 +134,14 @@ window.SITE={
  }
 ],
  carousels:[
+ {
+  "e": "https://www.instagram.com/p/Del4Yy_iPcQ/embed/",
+  "u": "https://www.instagram.com/p/Del4Yy_iPcQ/"
+ },
+ {
+  "e": "https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2F122128596189272252%2Fposts%2F122129210907272252&show_text=false&width=340",
+  "u": "https://www.facebook.com/122128596189272252/posts/122129210907272252"
+ },
  {
   "e": "https://www.instagram.com/p/DejF8aSiG5-/embed/",
   "u": "https://www.instagram.com/p/DejF8aSiG5-/"
