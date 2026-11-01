@@ -120,9 +120,15 @@ a.card.newv{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);al
 .hbar .hi{direction:rtl;display:inline-flex;align-items:center;gap:10px;padding-inline:36px;color:var(--text);font-size:16px}
 .hbar .hi::before{content:"✦";color:var(--gold)}
 .hbar .hi b{color:var(--gold-l);font-weight:700;font-size:14px}
-@keyframes hroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes hroll{from{transform:translateX(-50%)}to{transform:translateX(0)}}
 @media(prefers-reduced-motion:reduce){.hbar{justify-content:center}.hbar-t{animation:none!important;width:auto;white-space:normal;max-height:44px;overflow:hidden}.hbar .hi+.hi{display:none}}
 @media(max-width:560px){.hbar{height:40px}.hbar .hi{font-size:15px}}
+.hday{position:relative;text-align:center;padding:44px 40px 40px}
+.hday::before{content:"❝";display:block;font-size:64px;line-height:.8;color:var(--gold);font-family:Georgia,serif}
+.hday .ht{font-family:var(--f-display);font-size:34px;line-height:2;color:var(--text);max-width:900px;margin:10px auto 0;text-wrap:balance}
+.hday .hs{margin-top:14px;color:var(--gold-l);font-size:19px;font-weight:700}
+.hday .hs::before{content:"— "}
+@media(max-width:560px){.hday{padding:32px 20px}.hday .ht{font-size:26px}}
 #newvid[hidden]+#videos{padding-top:0!important;margin-top:-34px!important}
 .vside .ph{aspect-ratio:16/9}
 .vside .pb{width:52px;height:52px}
@@ -380,6 +386,11 @@ footer .wrap{padding-left:max(38px,env(safe-area-inset-left,0px));padding-right:
   <div class="vgrid" id="vgrid"></div>
 </section>
 
+<section id="hadith" style="padding-top:90px" hidden>
+  <div class="sec-head"><h2>حديث اليوم</h2><span class="note">من هدي النبي ﷺ</span></div>
+  <div class="card hday"><p class="ht" id="hdt"></p><div class="hs" id="hds"></div></div>
+</section>
+
 <section id="shorts" style="padding-top:124px">
   <div class="sec-head"><h2>مقاطع السيرة</h2><button class="btn line sm more" data-feed="0">افتح المقاطع</button></div>
   <div class="srow" id="srow"></div>
@@ -492,6 +503,7 @@ $('vgrid').innerHTML='<div class="vstack">'+vc(0)+vc(3)+'</div><div class="vstac
   $('hbt').innerHTML=one+one;
   $('hbt').style.setProperty('--hdur',Math.max(24,Math.min(120,Math.round((H.t.length+(H.s||'').length)*0.45)))+'s');
   $('hbar').hidden=false;
+  $('hdt').textContent=H.t;$('hds').textContent=H.s||'';if(!H.s)$('hds').hidden=true;$('hadith').hidden=false;
 })();
 $('srow').innerHTML=SHORTS.map(function(v,i){return '<a class="short" href="https://youtube.com/shorts/'+v.id+'" data-feed="'+i+'">'+thumb(v.id)+'<div class="fade"></div><span class="pb"></span><span class="over">'+esc(v.t.split('|')[0])+'</span></a>'}).join('');
 
