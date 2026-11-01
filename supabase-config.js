@@ -6,5 +6,5 @@
 window.IUFU_CFG = {
   url: "https://cyelrzslfmwsiswbnuos.supabase.co",
   key: "sb_publishable_JEDNfKv0_iPhZNRXWyoWBA_JabQ-67L",
-  live: false
+  live: true
 };

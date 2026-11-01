@@ -32,3 +32,9 @@ Owner approves the revision-2 preview; then deploy the edge function, commit and
 - Admin: tick "New video on the website" on any live item, or tick it in the Add dialog; only one New at a time (ticking replaces). Review summary + verification + audit (MARKED NEW / UNMARKED NEW). Titles read from YouTube only; no title/category fields; "replace existing video" idea removed.
 - DB: migrations/20261101b_new_video.sql (NOT applied to real project yet): unique index videos_one_new, iufu_apply_changes v2 (add is_new, set_new, clear_new, remove clears flag). Local tests all pass.
 - To do after approval: apply migration 2, pick initial New (suggest Xq8omR68XPA), deploy video-title function, push, merge, live:true.
+
+## Revision 4 — DEPLOYED 2026-11-01 (user approved)
+- Applied migration new_video_section to Supabase IUFU; deployed edge function video-title (verify_jwt=false); initial New video = Xq8omR68XPA.
+- supabase-config.js live:true; branch merged to main.
+- Untested: video-title live call (sandbox cannot reach Supabase), real-browser admin login on production.
+- Owner to do: admin password for shninam@icloud.com, Supabase Auth hardening (disable sign-ups, leaked-password protection, MFA), stop Metricool sync overwriting content.js lists.
