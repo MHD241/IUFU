@@ -45,3 +45,8 @@ Owner approves the revision-2 preview; then deploy the edge function, commit and
 - Admin: "Daily Hadith" tab (add/edit with date, text <=600, source <=120; review step; verify after save; remove/restore; audit log entries).
 - Also in working copy (unpushed): hero logo image, floating glowing start button, removed 'watch shorts' link, Accounts closer, New video above Episodes, see-through hero green.
 - Next: user approves previews -> apply migration c, push, merge. Admins type Hadith text themselves; nothing auto-generated.
+
+## Revision 6 — DEPLOYED 2026-11-01 (user: "push it, we will add more Hadiths later")
+- Applied migration daily_hadith to Supabase IUFU; no Hadith seeded, so banner/section stay hidden until an admin adds one in the Daily Hadith tab.
+- Pushed to main: hero logo/button/fade, New video above Episodes, Hadith banner + section.
+- Untested on production: admin sign-in, saving a Hadith, title lookup.
