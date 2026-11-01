@@ -108,6 +108,12 @@ a:hover .pb::before{border-left-color:#1b1407}
 .vmain .cap{display:flex;flex-direction:column;gap:14px;align-items:flex-start}
 .vmain h3{font-size:25px}
 .vstack{display:grid;gap:28px}
+a.card.newv{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);align-items:stretch}
+.newv .ph{aspect-ratio:16/9;display:block}
+.newv .cap{display:flex;flex-direction:column;justify-content:center;gap:14px;align-items:flex-start}
+.newv h3{font-size:27px}
+.newtag{display:inline-block;background:var(--gold);color:#1b1407;font-weight:900;font-size:15px;border-radius:99px;padding:2px 16px}
+@media(max-width:860px){.newv{grid-template-columns:1fr}}
 .vside .ph{aspect-ratio:16/9}
 .vside .pb{width:52px;height:52px}
 
@@ -354,6 +360,11 @@ footer .wrap{padding-left:max(38px,env(safe-area-inset-left,0px));padding-right:
   <div class="vgrid" id="vgrid"></div>
 </section>
 
+<section id="newvid" style="padding-top:90px" hidden>
+  <div class="sec-head"><h2>جديدنا</h2><span class="note">أحدث فيديو على القناة</span></div>
+  <div id="newbox"></div>
+</section>
+
 <section id="shorts" style="padding-top:124px">
   <div class="sec-head"><h2>مقاطع السيرة</h2><button class="btn line sm more" data-feed="0">افتح المقاطع</button></div>
   <div class="srow" id="srow"></div>
@@ -452,6 +463,14 @@ function thumb(id,big){
 function vcard(v){return '<a class="card vside" href="https://youtu.be/'+v.id+'" data-vid="'+v.id+'"><div class="ph">'+thumb(v.id,true)+'<span class="pb"></span></div><div class="cap"><h3>'+esc(v.t)+'</h3></div></a>'}
 function vc(i){return VIDEOS[i]?vcard(VIDEOS[i]):''}
 $('vgrid').innerHTML='<div class="vstack">'+vc(0)+vc(3)+'</div><div class="vstack">'+vc(1)+vc(2)+'</div>';
+(function(){
+  var n=SITE.newVideo; if(!n||!n.id||!n.t) return;
+  var s=n.kind==='short', href=s?'https://youtube.com/shorts/'+n.id:'https://youtu.be/'+n.id, attr, i;
+  if(s){i=SHORTS.findIndex(function(x){return x.id===n.id}); if(i<0) return; attr='data-feed="'+i+'"'}
+  else{ if(!VIDEOS.some(function(x){return x.id===n.id})) return; attr='data-vid="'+n.id+'"'}
+  $('newbox').innerHTML='<a class="card newv" href="'+href+'" '+attr+'><div class="ph">'+thumb(n.id,!s)+'<span class="pb"></span></div><div class="cap"><span class="newtag">جديد</span><h3>'+esc(n.t)+'</h3></div></a>';
+  $('newvid').hidden=false;
+})();
 $('srow').innerHTML=SHORTS.map(function(v,i){return '<a class="short" href="https://youtube.com/shorts/'+v.id+'" data-feed="'+i+'">'+thumb(v.id)+'<div class="fade"></div><span class="pb"></span><span class="over">'+esc(v.t.split('|')[0])+'</span></a>'}).join('');
 
 /* ---- carousels ---- */

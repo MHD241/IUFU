@@ -25,3 +25,10 @@ Updated: 2026-11-01 (revision 2)
 
 ## Exact next step
 Owner approves the revision-2 preview; then deploy the edge function, commit and push to `admin-dashboard`; owner sets the admin password; merge; sign in; check; set `live: true` and push.
+
+
+## Revision 3 — "New video" section (awaiting user approval of previews; NOT deployed)
+- Public site: new "جديدنا" section shows the one video marked New (SITE.newVideo from live-content.js `featured`). Hidden if none / live:false.
+- Admin: tick "New video on the website" on any live item, or tick it in the Add dialog; only one New at a time (ticking replaces). Review summary + verification + audit (MARKED NEW / UNMARKED NEW). Titles read from YouTube only; no title/category fields; "replace existing video" idea removed.
+- DB: migrations/20261101b_new_video.sql (NOT applied to real project yet): unique index videos_one_new, iufu_apply_changes v2 (add is_new, set_new, clear_new, remove clears flag). Local tests all pass.
+- To do after approval: apply migration 2, pick initial New (suggest Xq8omR68XPA), deploy video-title function, push, merge, live:true.

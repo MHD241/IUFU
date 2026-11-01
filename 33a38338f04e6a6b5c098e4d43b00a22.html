@@ -56,6 +56,7 @@
         </select>
         <button class="btn solid sm" id="addBtn" type="button">+ Add</button>
       </div>
+      <p id="newNow" class="newnow" role="status"></p>
       <p id="where" class="muted small"></p>
       <ul id="list" class="list"></ul>
       <p id="empty" class="muted" hidden>Nothing matches.</p>
@@ -82,8 +83,8 @@
     <h2 id="editTitle"></h2>
     <label>YouTube link<input id="fUrl" type="url" inputmode="url" placeholder="https://youtu.be/…" required></label>
     <p class="muted small">The title is read from YouTube automatically.</p>
-    <label class="inline"><input type="checkbox" id="fReplace"> Replace an existing video instead of adding a new one</label>
-    <label id="replaceRow" hidden>Video to replace<select id="fTarget"></select></label>
+    <div id="newRow" class="newrow"><label class="inline"><input type="checkbox" id="fNew"> Make this the <b>New video</b> on the website</label>
+      <p id="newHint" class="muted small"></p></div>
     <fieldset id="posRow"><legend>Position</legend>
       <label class="inline"><input type="radio" name="pos" value="top" checked> Show first</label>
       <label class="inline"><input type="radio" name="pos" value="bottom"> Show last</label>

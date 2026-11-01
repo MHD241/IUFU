@@ -89,3 +89,6 @@ dialog form,dialog>*{margin-block:10px}
  .item{grid-template-columns:72px 1fr}.thumb{width:72px;height:50px}
  #who{display:none}
 }
+.newnow{margin:10px 0 0;padding:8px 14px;border:1px solid var(--gold);border-radius:12px;background:rgba(201,162,75,.1);color:var(--gold-l);font-weight:800;overflow-wrap:anywhere}
+.newrow{margin:8px 0}.newrow p{margin:2px 0 0}
+label.newck{margin:0;align-self:center;color:var(--gold-l)}
