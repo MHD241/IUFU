@@ -161,7 +161,7 @@ function render() {
     if (i._pend) tags.push(h('span', { class: 'tag gold', text: i.tmp ? 'New, not saved' : 'Changed, not saved' }));
     var acts = [];
     if (i.active) acts.push(h('a', { class: 'btn line sm', href: safeHref(i.url), target: '_blank', rel: 'noopener noreferrer', text: 'Open' }));
-    if (i.active || i.tmp) acts.push(h('button', { class: 'btn line sm', type: 'button', text: i.tmp ? 'Edit' : 'Replace link / edit', onclick: function () { openEdit(i); } }));
+    if (i.active && !i.tmp) acts.push(h('button', { class: 'btn line sm', type: 'button', text: 'Replace link', onclick: function () { openEdit(i); } }));
     if (!i.tmp && role === 'admin') {
       if (i.active) acts.push(h('button', { class: 'btn line sm', type: 'button', text: 'Remove', onclick: function () { askRemove(i); } }));
       else acts.push(h('button', { class: 'btn line sm', type: 'button', text: 'Restore', onclick: function () { if (flags[i.id] === 'remove') delete flags[i.id]; else flags[i.id] = 'restore'; sync(); } }));
@@ -187,57 +187,81 @@ function sync() {
   $('pendingCount').textContent = n + ' unsaved change' + (n === 1 ? '' : 's');
 }
 
-/* ---------- add / edit dialog ---------- */
-function openEdit(i) {
-  var add = !i;
-  dlg = { mode: add ? 'add' : 'edit', id: add ? null : i.id, kind: add ? tab : i.kind };
-  $('editTitle').textContent = add ? 'Add ' + KIND_LABEL[dlg.kind].toLowerCase() : 'Replace link / edit';
-  show($('curBox'), !add);
-  if (!add) $('curUrl').textContent = i.url;
-  $('fUrl').value = add ? '' : i.url;
-  $('fTitle').value = add ? '' : (i.title || '');
-  show($('titleRow'), true);
-  $('fCat').value = add ? DEFAULT_CAT : (i.category || DEFAULT_CAT);
-  show($('posRow'), add);
-  $('editSave').textContent = add ? 'Add to changes' : 'Update in changes';
-  say($('fMsg'), '');
-  showPreview();
+/* ---------- add / replace dialog ---------- */
+var titleCache = {}, fetchSeq = 0, fetched = null;   // fetched = { id, title } for the link currently in the box
+
+function replaceTargets(kind) {   // live, saved items of this section that can be replaced
+  return itemsFor(kind).filter(function (x) { return x.active && !x.tmp; });
+}
+function openEdit(target) {
+  var kind = target ? target.kind : tab;
+  dlg = { kind: kind };
+  $('editTitle').textContent = 'Add ' + KIND_LABEL[kind].toLowerCase();
+  $('fUrl').value = '';
+  var sel = $('fTarget'); clear(sel);
+  var list = replaceTargets(kind), rank = 0;
+  list.forEach(function (x) { rank++; sel.appendChild(h('option', { value: x.id, text: '#' + rank + '  ' + (x.title || x.url) })); });
+  $('fReplace').disabled = !list.length;
+  $('fReplace').checked = !!target && list.length > 0;
+  if (target) sel.value = target.id;
+  say($('fMsg'), ''); fetched = null;
+  syncDialog(); showPreview();
   $('editDlg').showModal();
   $('fUrl').focus();
 }
-function showPreview() {
-  var box = $('preview'); clear(box);
-  var v = $('fUrl').value.trim();
+function syncDialog() {
+  var rep = $('fReplace').checked;
+  show($('replaceRow'), rep); show($('posRow'), !rep);
+  $('editSave').textContent = rep ? 'Replace in changes' : 'Add to changes';
+}
+async function getTitle(id) {
+  if (titleCache[id]) return titleCache[id];
+  var r = await api('/functions/v1/video-title', { method: 'POST', body: { id: id } });
+  if (!r || typeof r.title !== 'string' || !r.title.trim()) throw new Error('YouTube returned no title for this video.');
+  titleCache[id] = r.title.trim();
+  return titleCache[id];
+}
+async function showPreview() {
+  var box = $('preview'); clear(box); fetched = null;
+  var v = $('fUrl').value.trim(), seq = ++fetchSeq;
+  $('editSave').disabled = true;
   if (!v) { show(box, false); return; }
   var p = parseLink(dlg.kind, v);
   show(box, true);
   if (!p.ok) { box.appendChild(h('span', { class: 'muted small', text: p.error })); return; }
   box.appendChild(thumbNode({ platform: p.platform, external_id: p.external_id }));
-  box.appendChild(h('span', { class: 'small', text: 'Will be saved as: ' + p.url }));
+  var line = h('span', { class: 'small', dir: 'auto', text: 'Reading the title from YouTube…' });
+  box.appendChild(line);
+  try {
+    var t = await getTitle(p.external_id);
+    if (seq !== fetchSeq) return;
+    fetched = { id: p.external_id, title: t };
+    line.textContent = 'Title (from YouTube): ' + t;
+    $('editSave').disabled = false;
+  } catch (e) {
+    if (seq !== fetchSeq) return;
+    line.textContent = 'Could not read the title: ' + e.message + ' Check that the video is public, then edit the link to try again.';
+  }
 }
 function stageEdit(ev) {
   ev.preventDefault();
-  var kind = dlg.kind, p = parseLink(kind, $('fUrl').value), msg = $('fMsg');
+  var kind = dlg.kind, p = parseLink(kind, $('fUrl').value), msg = $('fMsg'), rep = $('fReplace').checked;
   if (!p.ok) return say(msg, p.error, 'err');
-  var title = $('fTitle').value.trim(), cat = $('fCat').value.trim() || DEFAULT_CAT;
-  if (!title) return say(msg, 'Enter a title.', 'err');
-  var dup = sameItemElsewhere(kind, p, dlg.id);
-  if (dup) return say(msg, 'This link is already on the site' + (dup.title ? ' ("' + dup.title + '")' : '') + '.', 'err');
-  if (dlg.mode === 'add') {
-    var list = itemsFor(kind).concat(rows.filter(function (r) { return r.kind === kind; }));
+  if (!fetched || fetched.id !== p.external_id) return say(msg, 'Wait for the title to load from YouTube.', 'err');
+  var targetId = rep ? $('fTarget').value : null;
+  var dup = sameItemElsewhere(kind, p, targetId);
+  if (dup) return say(msg, 'This video is already on the site' + (dup.title ? ' ("' + dup.title + '")' : '') + '.', 'err');
+  if (!rep) {
+    var all = itemsFor(kind).concat(rows.filter(function (r) { return r.kind === kind; }));
     var pos = $('editForm').elements.pos.value === 'top'
-      ? Math.min.apply(null, list.map(function (x) { return x.position; }).concat([10])) - 10
-      : Math.max.apply(null, list.map(function (x) { return x.position; }).concat([0])) + 10;
-    adds.push({ tmp: 'new-' + Date.now() + '-' + adds.length, kind: kind, external_id: p.external_id, url: p.url, title: title, category: cat, position: pos });
-  } else if (String(dlg.id).indexOf('new-') === 0) {
-    adds.forEach(function (a) { if (a.tmp === dlg.id) { a.external_id = p.external_id; a.url = p.url; a.title = title; a.category = cat; } });
+      ? Math.min.apply(null, all.map(function (x) { return x.position; }).concat([10])) - 10
+      : Math.max.apply(null, all.map(function (x) { return x.position; }).concat([0])) + 10;
+    adds.push({ tmp: 'new-' + Date.now() + '-' + adds.length, kind: kind, external_id: p.external_id, url: p.url, title: fetched.title, position: pos });
   } else {
-    var r = rows.filter(function (x) { return x.id === dlg.id; })[0], e = {};
-    if (p.url !== r.url) { e.url = p.url; e.external_id = p.external_id; }
-    if (title !== (r.title || '')) e.title = title;
-    if (cat !== (r.category || DEFAULT_CAT)) e.category = cat;
-    if (!Object.keys(e).length) { delete edits[dlg.id]; return say(msg, 'Nothing was changed.', 'err'); }
-    edits[dlg.id] = e;
+    var r = rows.filter(function (x) { return x.id === targetId; })[0];
+    if (!r) return say(msg, 'Pick the video to replace.', 'err');
+    if (p.url === r.url) return say(msg, 'That is already this video’s link.', 'err');
+    edits[targetId] = { url: p.url, external_id: p.external_id, title: fetched.title };
   }
   $('editDlg').close();
   sync();
@@ -257,7 +281,7 @@ function buildReview() {
   reviewItems = [];
   adds.forEach(function (a) {
     reviewItems.push({ key: a.tmp, kind: a.kind, summary: [['Add ' + KIND_LABEL[a.kind].toLowerCase(), null, lbl(a) + ' — ' + a.url]],
-      change: { op: 'add', kind: a.kind, youtube_id: a.external_id, title: a.title, category: a.category, position: a.position }, add: a });
+      change: { op: 'add', kind: a.kind, youtube_id: a.external_id, title: a.title, position: a.position }, add: a });
   });
   rows.forEach(function (r) {
     var e = edits[r.id];
@@ -265,11 +289,9 @@ function buildReview() {
       var s = [];
       if (e.url) s.push(['Link', r.url, e.url]);
       if (e.title !== undefined) s.push(['Title', r.title, e.title]);
-      if (e.category !== undefined) s.push(['Category', r.category, e.category]);
       var c = { op: 'update', id: r.id };
       if (e.url) c.youtube_id = e.external_id;
       if (e.title !== undefined) c.title = e.title;
-      if (e.category !== undefined) c.category = e.category;
       reviewItems.push({ key: 'e-' + r.id, id: r.id, kind: r.kind, summary: s, change: c, head: lbl(r) });
     }
     if (flags[r.id]) reviewItems.push({ key: 'f-' + r.id, id: r.id, kind: r.kind, flag: flags[r.id],
@@ -313,7 +335,7 @@ async function publish() {
     if (c.op === 'add') r = rows.filter(function (x) { return x.kind === c.kind && x.external_id === c.youtube_id && x.active; })[0];
     else r = rows.filter(function (x) { return x.id === c.id; })[0];
     var ok = !!r;
-    if (ok && c.op === 'update') { if ('youtube_id' in c && r.external_id !== c.youtube_id) ok = false; if ('title' in c && r.title !== c.title) ok = false; if ('category' in c && r.category !== c.category) ok = false; }
+    if (ok && c.op === 'update') { if ('youtube_id' in c && r.external_id !== c.youtube_id) ok = false; if ('title' in c && r.title !== c.title) ok = false; }
     if (ok && c.op === 'remove') ok = !r.active;
     if (ok && c.op === 'restore') ok = r.active;
     if (!ok) problems.push(p.summary[0][0]);
@@ -411,6 +433,7 @@ function init() {
   $('status').addEventListener('change', render);
   $('addBtn').addEventListener('click', function () { openEdit(null); });
   $('fUrl').addEventListener('input', showPreview);
+  $('fReplace').addEventListener('change', syncDialog);
   $('editForm').addEventListener('submit', stageEdit);
   $('editCancel').addEventListener('click', function () { $('editDlg').close(); });
   $('rmNo').addEventListener('click', function () { $('rmDlg').close(); });

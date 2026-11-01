@@ -80,13 +80,10 @@
 <dialog id="editDlg">
   <form method="dialog" id="editForm" novalidate>
     <h2 id="editTitle"></h2>
-    <div id="curBox" class="cur" hidden>
-      <span class="muted small">Current link</span>
-      <code id="curUrl"></code>
-    </div>
-    <label><span id="urlLabel">Link</span><input id="fUrl" type="url" inputmode="url" placeholder="https://" required></label>
-    <label id="titleRow">Title<input id="fTitle" type="text" maxlength="300" dir="auto"></label>
-    <label>Category<input id="fCat" type="text" maxlength="80" dir="auto"></label>
+    <label>YouTube link<input id="fUrl" type="url" inputmode="url" placeholder="https://youtu.be/…" required></label>
+    <p class="muted small">The title is read from YouTube automatically.</p>
+    <label class="inline"><input type="checkbox" id="fReplace"> Replace an existing video instead of adding a new one</label>
+    <label id="replaceRow" hidden>Video to replace<select id="fTarget"></select></label>
     <fieldset id="posRow"><legend>Position</legend>
       <label class="inline"><input type="radio" name="pos" value="top" checked> Show first</label>
       <label class="inline"><input type="radio" name="pos" value="bottom"> Show last</label>
@@ -95,7 +92,7 @@
     <p id="fMsg" class="msg" role="alert" hidden></p>
     <div class="row">
       <button class="btn line sm" id="editCancel" type="button">Cancel</button>
-      <button class="btn solid sm" id="editSave" type="submit">Add to changes</button>
+      <button class="btn solid sm" id="editSave" type="submit" disabled>Add to changes</button>
     </div>
   </form>
 </dialog>
