@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https://i.ytimg.com data:; connect-src https://*.supabase.co; base-uri 'none'; form-action 'none'">
+<title>IUFU Console</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800;900&display=swap">
+<link rel="stylesheet" href="33a38338f04e6a6b5c098e4d43b00a22.css">
+</head>
+<body>
+<noscript><p class="note">This console needs JavaScript.</p></noscript>
+
+<!-- Sign-in -->
+<main id="login" class="center" hidden>
+  <form id="loginForm" class="panel narrow" autocomplete="on" novalidate>
+    <img class="logo" src="img/p6.jpg" alt="">
+    <h1>IUFU Console</h1>
+    <p class="muted">Authorised administrators only.</p>
+    <label>Email<input id="email" type="email" autocomplete="username" required></label>
+    <label>Password<input id="password" type="password" autocomplete="current-password" required></label>
+    <p id="loginMsg" class="msg" role="alert" hidden></p>
+    <button class="btn solid" id="loginBtn" type="submit">Sign in</button>
+  </form>
+</main>
+
+<!-- App -->
+<div id="app" hidden>
+  <header class="top">
+    <div class="wrap bar">
+      <img class="logo sm" src="img/p6.jpg" alt="">
+      <b class="brand">IUFU Console</b>
+      <span id="who" class="muted grow"></span>
+      <button class="btn line sm" id="logout" type="button">Sign out</button>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <p id="banner" class="msg" role="status" hidden></p>
+
+    <nav class="tabs" role="tablist" id="tabs">
+      <button role="tab" data-kind="video" aria-selected="true">Episodes</button>
+      <button role="tab" data-kind="short" aria-selected="false">Shorts</button>
+      <button role="tab" data-kind="audit" aria-selected="false" id="auditTab" hidden>Audit log</button>
+    </nav>
+
+    <section id="listView">
+      <div class="tools">
+        <input id="q" type="search" placeholder="Search title or link" aria-label="Search">
+        <select id="status" aria-label="Status">
+          <option value="live">Live on site</option>
+          <option value="removed">Removed</option>
+          <option value="all">All</option>
+        </select>
+        <button class="btn solid sm" id="addBtn" type="button">+ Add</button>
+      </div>
+      <p id="where" class="muted small"></p>
+      <ul id="list" class="list"></ul>
+      <p id="empty" class="muted" hidden>Nothing matches.</p>
+    </section>
+
+    <section id="auditView" hidden>
+      <div class="table-wrap"><table class="audit">
+        <thead><tr><th>When</th><th>Who</th><th>Action</th><th>Item</th><th>Change</th></tr></thead>
+        <tbody id="auditBody"></tbody>
+      </table></div>
+    </section>
+  </div>
+
+  <div id="pendingBar" class="pending" hidden>
+    <span id="pendingCount"></span>
+    <button class="btn line sm" id="discardAll" type="button">Discard</button>
+    <button class="btn solid sm" id="reviewBtn" type="button">Review &amp; publish</button>
+  </div>
+</div>
+
+<!-- Add / edit dialog -->
+<dialog id="editDlg">
+  <form method="dialog" id="editForm" novalidate>
+    <h2 id="editTitle"></h2>
+    <div id="curBox" class="cur" hidden>
+      <span class="muted small">Current link</span>
+      <code id="curUrl"></code>
+    </div>
+    <label><span id="urlLabel">Link</span><input id="fUrl" type="url" inputmode="url" placeholder="https://" required></label>
+    <label id="titleRow">Title<input id="fTitle" type="text" maxlength="300" dir="auto"></label>
+    <label>Category<input id="fCat" type="text" maxlength="80" dir="auto"></label>
+    <fieldset id="posRow"><legend>Position</legend>
+      <label class="inline"><input type="radio" name="pos" value="top" checked> Show first</label>
+      <label class="inline"><input type="radio" name="pos" value="bottom"> Show last</label>
+    </fieldset>
+    <div id="preview" class="preview" hidden></div>
+    <p id="fMsg" class="msg" role="alert" hidden></p>
+    <div class="row">
+      <button class="btn line sm" id="editCancel" type="button">Cancel</button>
+      <button class="btn solid sm" id="editSave" type="submit">Add to changes</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Review dialog -->
+<dialog id="reviewDlg">
+  <h2>Review changes</h2>
+  <p class="muted small">Only the changes ticked below will be published. Nothing is saved until you confirm.</p>
+  <ul id="reviewList" class="review"></ul>
+  <p id="rMsg" class="msg" role="alert" hidden></p>
+  <div class="row">
+    <button class="btn line sm" id="rCancel" type="button">Back</button>
+    <button class="btn solid sm" id="rConfirm" type="button">Confirm &amp; publish</button>
+  </div>
+</dialog>
+
+<!-- Remove confirm -->
+<dialog id="rmDlg">
+  <h2 id="rmTitle"></h2>
+  <p>This removes it from the public website. The video itself stays on its platform and can be restored here later.</p>
+  <div class="row">
+    <button class="btn line sm" id="rmNo" type="button">Cancel</button>
+    <button class="btn danger sm" id="rmYes" type="button">Remove from site</button>
+  </div>
+</dialog>
+
+<script src="supabase-config.js"></script>
+<script src="33a38338f04e6a6b5c098e4d43b00a22.js"></script>
+</body>
+</html>

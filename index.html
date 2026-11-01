@@ -433,7 +433,10 @@ footer .wrap{padding-left:max(38px,env(safe-area-inset-left,0px));padding-right:
 </div>
 
 <script src="content.js"></script>
+<script src="supabase-config.js"></script>
+<script src="live-content.js"></script>
 <script>
+window.__iufuBoot=function(){
 (function(){
 var VIDEOS=SITE.videos;
 var SHORTS=SITE.shorts;
@@ -447,7 +450,8 @@ function thumb(id,big){
 
 /* ---- render ---- */
 function vcard(v){return '<a class="card vside" href="https://youtu.be/'+v.id+'" data-vid="'+v.id+'"><div class="ph">'+thumb(v.id,true)+'<span class="pb"></span></div><div class="cap"><h3>'+esc(v.t)+'</h3></div></a>'}
-$('vgrid').innerHTML='<div class="vstack">'+vcard(VIDEOS[0])+vcard(VIDEOS[3])+'</div><div class="vstack">'+vcard(VIDEOS[1])+vcard(VIDEOS[2])+'</div>';
+function vc(i){return VIDEOS[i]?vcard(VIDEOS[i]):''}
+$('vgrid').innerHTML='<div class="vstack">'+vc(0)+vc(3)+'</div><div class="vstack">'+vc(1)+vc(2)+'</div>';
 $('srow').innerHTML=SHORTS.map(function(v,i){return '<a class="short" href="https://youtube.com/shorts/'+v.id+'" data-feed="'+i+'">'+thumb(v.id)+'<div class="fade"></div><span class="pb"></span><span class="over">'+esc(v.t.split('|')[0])+'</span></a>'}).join('');
 
 /* ---- carousels ---- */
@@ -677,6 +681,7 @@ document.addEventListener('click',function(e){
   if(m&&VIDEOS.some(function(x){return x.id===m[1]}))openVid(m[1]);
 })();
 })();
+};
 </script>
 
 </body>
