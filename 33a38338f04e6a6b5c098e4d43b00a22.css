@@ -35,7 +35,7 @@ button,input,select{font:inherit;color:inherit}
 
 label{display:grid;gap:4px;font-weight:600;font-size:15px}
 label.inline{display:inline-flex;align-items:center;gap:8px;margin-inline-end:18px;font-weight:400}
-input[type=text],input[type=url],input[type=email],input[type=password],input[type=search],select{width:100%;min-height:44px;padding:8px 14px;border-radius:12px;border:1px solid var(--line);background:var(--ink);color:var(--text)}
+input[type=text],input[type=date],textarea,input[type=url],input[type=email],input[type=password],input[type=search],select{width:100%;min-height:44px;padding:8px 14px;border-radius:12px;border:1px solid var(--line);background:var(--ink);color:var(--text)}
 fieldset{border:1px solid var(--line);border-radius:12px;padding:8px 14px;margin:12px 0}
 legend{padding:0 6px;font-size:14px;color:var(--text2)}
 
@@ -92,3 +92,8 @@ dialog form,dialog>*{margin-block:10px}
 .newnow{margin:10px 0 0;padding:8px 14px;border:1px solid var(--gold);border-radius:12px;background:rgba(201,162,75,.1);color:var(--gold-l);font-weight:800;overflow-wrap:anywhere}
 .newrow{margin:8px 0}.newrow p{margin:2px 0 0}
 label.newck{margin:0;align-self:center;color:var(--gold-l)}
+textarea{width:100%;padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:var(--ink);color:var(--text);resize:vertical;font:inherit}
+.hitem{grid-template-columns:110px 1fr}.hdate{font-weight:800;color:var(--gold-l);direction:ltr}
+.hprev{border:1px dashed var(--line);border-radius:12px;padding:10px 14px;overflow-wrap:anywhere}
+#hSummary .diff{border:1px solid var(--line);border-radius:12px;padding:10px;margin-bottom:8px;overflow-wrap:anywhere}
+#hDate{direction:ltr}

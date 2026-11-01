@@ -38,3 +38,10 @@ Owner approves the revision-2 preview; then deploy the edge function, commit and
 - supabase-config.js live:true; branch merged to main.
 - Untested: video-title live call (sandbox cannot reach Supabase), real-browser admin login on production.
 - Owner to do: admin password for shninam@icloud.com, Supabase Auth hardening (disable sign-ups, leaked-password protection, MFA), stop Metricool sync overwriting content.js lists.
+
+## Revision 5 — Daily Hadith banner (PREVIEW ONLY, not pushed, migration NOT applied)
+- Public: rolling Hadith banner in the header's empty space (live-content.js fetches daily_hadith: newest published row with show_date <= today; hidden if none).
+- DB: migrations/20261101c_daily_hadith.sql (table daily_hadith, RLS public read published, admin insert/update only, no delete, audit trigger; log_iufu_change now keeps old/new for hadith too). Local tests pass.
+- Admin: "Daily Hadith" tab (add/edit with date, text <=600, source <=120; review step; verify after save; remove/restore; audit log entries).
+- Also in working copy (unpushed): hero logo image, floating glowing start button, removed 'watch shorts' link, Accounts closer, New video above Episodes, see-through hero green.
+- Next: user approves previews -> apply migration c, push, merge. Admins type Hadith text themselves; nothing auto-generated.

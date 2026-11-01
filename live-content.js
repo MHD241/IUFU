@@ -19,6 +19,22 @@
       .catch(function () { clearTimeout(t); return null; });
   }
 
+  function fetchHadith() {
+    if (C.live !== true || !C.url || !C.key || !window.fetch || !window.AbortController) return Promise.resolve(null);
+    var d = new Date(), p = function (n) { return (n < 10 ? '0' : '') + n; };
+    var today = d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
+    var ac = new AbortController(), t = setTimeout(function () { ac.abort(); }, 3500);
+    return fetch(C.url + '/rest/v1/daily_hadith?select=text,source&published=eq.true&show_date=lte.' + today + '&order=show_date.desc&limit=1',
+      { headers: { apikey: C.key }, signal: ac.signal, cache: 'no-store' })
+      .then(function (r) { clearTimeout(t); if (!r.ok) throw new Error('http'); return r.json(); })
+      .then(function (a) {
+        var h = Array.isArray(a) && a[0];
+        if (h && typeof h.text === 'string' && h.text.length >= 10 && h.text.length <= 600)
+          window.SITE.hadith = { t: h.text, s: typeof h.source === 'string' ? h.source.slice(0, 120) : '' };
+      })
+      .catch(function () { clearTimeout(t); });
+  }
+
   function apply(rows) {
     if (!Array.isArray(rows)) return;
     var v = [], s = [], nw = null;
@@ -36,5 +52,5 @@
   var ready = new Promise(function (res) {
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', res); else res();
   });
-  Promise.all([ready, fetchLive()]).then(function (r) { try { apply(r[1]); } catch (e) {} boot(); });
+  Promise.all([ready, fetchLive(), fetchHadith()]).then(function (r) { try { apply(r[1]); } catch (e) {} boot(); });
 })();

@@ -43,6 +43,7 @@
     <nav class="tabs" role="tablist" id="tabs">
       <button role="tab" data-kind="video" aria-selected="true">Episodes</button>
       <button role="tab" data-kind="short" aria-selected="false">Shorts</button>
+      <button role="tab" data-kind="hadith" aria-selected="false">Daily Hadith</button>
       <button role="tab" data-kind="audit" aria-selected="false" id="auditTab" hidden>Audit log</button>
     </nav>
 
@@ -60,6 +61,14 @@
       <p id="where" class="muted small"></p>
       <ul id="list" class="list"></ul>
       <p id="empty" class="muted" hidden>Nothing matches.</p>
+    </section>
+
+    <section id="hadithView" hidden>
+      <p class="muted small">A short Hadith rolls across the website header like a banner. Each date has one Hadith; the website shows the most recent one whose date has arrived. Enter the text and its source carefully: it is shown exactly as typed.</p>
+      <p id="hNow" class="newnow" role="status"></p>
+      <div class="tools"><span></span><span></span><button class="btn solid sm" id="hAdd" type="button">+ Add Hadith</button></div>
+      <ul id="hList" class="list"></ul>
+      <p id="hEmpty" class="muted" hidden>No Hadith added yet. The banner stays hidden until one is added.</p>
     </section>
 
     <section id="auditView" hidden>
@@ -96,6 +105,41 @@
       <button class="btn solid sm" id="editSave" type="submit" disabled>Add to changes</button>
     </div>
   </form>
+</dialog>
+
+<!-- Hadith dialog -->
+<dialog id="hDlg">
+  <h2 id="hTitle"></h2>
+  <form id="hForm1" novalidate>
+    <label>Date it appears<input id="hDate" type="date" required></label>
+    <label>Hadith text<textarea id="hText" rows="4" maxlength="600" dir="rtl" required></textarea></label>
+    <p class="muted small" id="hCount"></p>
+    <label>Source (e.g. narrator and book)<input id="hSource" type="text" maxlength="120" dir="rtl"></label>
+    <p class="muted small">How it will look in the banner:</p>
+    <div id="hPrev" class="hprev" dir="rtl"></div>
+    <div class="row">
+      <button class="btn line sm" id="hCancel" type="button">Cancel</button>
+      <button class="btn solid sm" type="submit">Review</button>
+    </div>
+  </form>
+  <div id="hForm2" hidden>
+    <p class="muted small">Check this before saving. Nothing is saved until you confirm.</p>
+    <div id="hSummary" class="review"></div>
+    <div class="row">
+      <button class="btn line sm" id="hBack" type="button">Back</button>
+      <button class="btn solid sm" id="hConfirm" type="button">Confirm &amp; save</button>
+    </div>
+  </div>
+  <p id="hMsg" class="msg" role="alert" hidden></p>
+</dialog>
+
+<dialog id="hrDlg">
+  <h2 id="hrTitle"></h2>
+  <p id="hrText"></p>
+  <div class="row">
+    <button class="btn line sm" id="hrNo" type="button">Cancel</button>
+    <button class="btn danger sm" id="hrYes" type="button"></button>
+  </div>
 </dialog>
 
 <!-- Review dialog -->

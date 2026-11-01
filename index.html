@@ -44,7 +44,7 @@ button{font:inherit}
 .brand{display:flex;align-items:center;gap:12px;flex:none}
 .brand img{width:50px;height:50px;border-radius:50%}
 .brand b{font-family:var(--f-display);font-size:22px;color:var(--gold-l);font-weight:900;white-space:nowrap}
-.nav{display:flex;gap:28px;margin-inline-end:auto;font-size:17px;color:var(--text2)}
+.nav{display:flex;gap:28px;font-size:17px;color:var(--text2)}
 .nav a{position:relative;padding:4px 0;transition:color .2s}
 .nav a:hover{color:var(--gold-l)}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-family:var(--f-display);font-weight:800;font-size:18px;border-radius:99px;padding:0 28px;height:52px;cursor:pointer;border:1px solid var(--gold);transition:background .25s,color .25s,transform .25s}
@@ -57,9 +57,9 @@ button{font:inherit}
 
 /* hero */
 .hero{position:relative;overflow:hidden;background:var(--ink);min-height:640px}
-.hero-img{position:absolute;inset:0 auto 0 0;width:74%;-webkit-mask-image:linear-gradient(to left,transparent 0,#000 42%);mask-image:linear-gradient(to left,transparent 0,#000 42%)}
+.hero-img{position:absolute;inset:0 auto 0 0;width:100%;-webkit-mask-image:linear-gradient(to left,rgba(0,0,0,.22) 0,rgba(0,0,0,.22) 24%,#000 58%);mask-image:linear-gradient(to left,rgba(0,0,0,.22) 0,rgba(0,0,0,.22) 24%,#000 58%)}
 .hero-img img{object-position:35% 50%}
-.hero::after{content:"";position:absolute;inset:auto 0 0;height:110px;background:linear-gradient(to bottom,transparent,#0A3019)}
+.hero::after{content:"";position:absolute;inset:auto 0 0;height:70px;background:linear-gradient(to bottom,transparent,#0A3019)}
 .hero .wrap{position:relative;z-index:2;min-height:640px;display:flex;align-items:center}
 .hero-copy{width:min(540px,100%);display:flex;flex-direction:column;gap:18px;padding-block:40px 70px}
 .hello{font-family:var(--f-display);color:var(--gold-l);font-size:20px}
@@ -114,6 +114,16 @@ a.card.newv{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);al
 .newv h3{font-size:27px}
 .newtag{display:inline-block;background:var(--gold);color:#1b1407;font-weight:900;font-size:15px;border-radius:99px;padding:2px 16px}
 @media(max-width:860px){.newv{grid-template-columns:1fr}}
+.hbar{flex:1 1 0;min-width:0;overflow:hidden;direction:ltr;height:44px;display:flex;align-items:center;border:1px solid var(--line);border-radius:99px;background:rgba(0,0,0,.18);-webkit-mask-image:linear-gradient(to right,transparent 0,#000 7%,#000 93%,transparent 100%);mask-image:linear-gradient(to right,transparent 0,#000 7%,#000 93%,transparent 100%)}
+.hbar-t{display:flex;flex:none;width:max-content;white-space:nowrap;animation:hroll var(--hdur,40s) linear infinite}
+.hbar:hover .hbar-t,.hbar:focus-within .hbar-t{animation-play-state:paused}
+.hbar .hi{direction:rtl;display:inline-flex;align-items:center;gap:10px;padding-inline:36px;color:var(--text);font-size:16px}
+.hbar .hi::before{content:"✦";color:var(--gold)}
+.hbar .hi b{color:var(--gold-l);font-weight:700;font-size:14px}
+@keyframes hroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media(prefers-reduced-motion:reduce){.hbar{justify-content:center}.hbar-t{animation:none!important;width:auto;white-space:normal;max-height:44px;overflow:hidden}.hbar .hi+.hi{display:none}}
+@media(max-width:560px){.hbar{height:40px}.hbar .hi{font-size:15px}}
+#newvid[hidden]+#videos{padding-top:0!important;margin-top:-34px!important}
 .vside .ph{aspect-ratio:16/9}
 .vside .pb{width:52px;height:52px}
 
@@ -180,12 +190,17 @@ footer .wrap{padding-block:48px 30px}
 .strip{margin-top:34px;padding-top:20px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:15px;color:var(--text2)}
 
 
-.hero-img{width:62%}
+.hero-img{width:100%}
 .hero-copy{width:min(400px,100%)}
 .hero p{font-size:18px;line-height:1.9}
 .hero h1.iu{display:flex;flex-direction:column;gap:6px;font-family:var(--f-display);line-height:1;direction:ltr;align-items:flex-end}
 .iu b{font-size:104px;font-weight:900;letter-spacing:4px;background:linear-gradient(180deg,#F3DE9A,#C9A24B 60%,#8E6A22);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 4px 14px rgba(0,0,0,.45))}
 .brand .iu-s{font-family:var(--f-display);font-size:30px;font-weight:900;letter-spacing:2px;direction:ltr;background:linear-gradient(180deg,#F3DE9A,#C9A24B 65%,#8E6A22);-webkit-background-clip:text;background-clip:text;color:transparent}
+.iu-logo{display:block;width:min(320px,100%);height:auto;filter:drop-shadow(0 6px 18px rgba(0,0,0,.5))}
+.hero .btn.solid{animation:floatbtn 3.4s ease-in-out infinite}
+@keyframes floatbtn{0%,100%{transform:translateY(0);box-shadow:0 10px 22px rgba(201,162,75,.30),0 22px 30px -8px rgba(201,162,75,.35)}50%{transform:translateY(-8px);box-shadow:0 18px 30px rgba(201,162,75,.45),0 34px 44px -6px rgba(224,192,112,.55)}}
+.hero .btn.solid:hover{animation-play-state:paused}
+@media(prefers-reduced-motion:reduce){.hero .btn.solid{animation:none;box-shadow:0 8px 24px rgba(201,162,75,.45)}}
 .iu small{font-size:21px;font-weight:600;letter-spacing:3px;color:var(--gold-l)}
 .about p{text-align:justify;text-align-last:right}
 .top{background:linear-gradient(to right,rgba(20,90,49,.55) 0,rgba(6,34,19,.97) 34%,rgba(6,34,19,.97) 80%,rgba(20,90,49,.6) 100%)}
@@ -334,6 +349,7 @@ footer .wrap{padding-left:max(38px,env(safe-area-inset-left,0px));padding-right:
     <nav class="nav" aria-label="القائمة الرئيسية">
       <a href="#top">الرئيسية</a><a href="#videos">الحلقات</a><a href="#shorts" data-feed="0">مقاطع السيرة</a><a href="#about">عن القناة</a><a href="#accounts">حساباتنا</a>
     </nav>
+    <div class="hbar" id="hbar" role="region" aria-label="حديث اليوم" hidden><div class="hbar-t" id="hbt"></div></div>
     <button class="btn line sm" data-feed="0">شاهد المقاطع</button>
   </div>
 </header>
@@ -343,11 +359,10 @@ footer .wrap{padding-left:max(38px,env(safe-area-inset-left,0px));padding-right:
   <div class="wrap">
     <div class="hero-copy">
       <span class="hello">أهلًا بك… اجلس واستمع</span>
-      <h1 class="iu"><b>IUFU</b><small>Islamic Universe For You</small></h1>
+      <h1 class="iu"><img class="iu-logo" src="img/iufyou-logo.webp" alt="IUFyou" width="1000" height="334"><small>Islamic Universe For You</small></h1>
       <p>حكايات من السيرة والتاريخ الإسلامي بالفصحى وبمصادرها، تُروى بهدوء.</p>
       <div class="hero-actions">
         <button class="btn solid" data-vid="Xq8omR68XPA"><svg viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></svg>ابدأ المشاهدة</button>
-        <button class="link" data-feed="0">أو شاهد المقاطع</button>
       </div>
     </div>
   </div>
@@ -355,14 +370,14 @@ footer .wrap{padding-left:max(38px,env(safe-area-inset-left,0px));padding-right:
 
 <div class="wrap"><main>
 
-<section id="videos" style="padding-top:0;margin-top:-34px">
-  <div class="sec-head"><h2>الحلقات</h2><span class="note">شاهدها هنا دون مغادرة الموقع</span></div>
-  <div class="vgrid" id="vgrid"></div>
-</section>
-
-<section id="newvid" style="padding-top:90px" hidden>
+<section id="newvid" style="padding-top:0;margin-top:-34px" hidden>
   <div class="sec-head"><h2>جديدنا</h2><span class="note">أحدث فيديو على القناة</span></div>
   <div id="newbox"></div>
+</section>
+
+<section id="videos" style="padding-top:90px">
+  <div class="sec-head"><h2>الحلقات</h2><span class="note">شاهدها هنا دون مغادرة الموقع</span></div>
+  <div class="vgrid" id="vgrid"></div>
 </section>
 
 <section id="shorts" style="padding-top:124px">
@@ -390,7 +405,7 @@ footer .wrap{padding-left:max(38px,env(safe-area-inset-left,0px));padding-right:
 
 </main></div>
 <div class="band"><div class="wrap"><main>
-<section id="accounts" style="padding-top:170px">
+<section id="accounts" style="padding-top:70px">
   <div class="sec-head"><h2>حساباتنا</h2></div>
   <div class="accrow">
   <div class="g5a">
@@ -470,6 +485,13 @@ $('vgrid').innerHTML='<div class="vstack">'+vc(0)+vc(3)+'</div><div class="vstac
   else{ if(!VIDEOS.some(function(x){return x.id===n.id})) return; attr='data-vid="'+n.id+'"'}
   $('newbox').innerHTML='<a class="card newv" href="'+href+'" '+attr+'><div class="ph">'+thumb(n.id,!s)+'<span class="pb"></span></div><div class="cap"><span class="newtag">جديد</span><h3>'+esc(n.t)+'</h3></div></a>';
   $('newvid').hidden=false;
+})();
+(function(){
+  var H=SITE.hadith; if(!H||!H.t) return;
+  var one='<span class="hi">'+esc(H.t)+(H.s?' <b>— '+esc(H.s)+'</b>':'')+'</span>';
+  $('hbt').innerHTML=one+one;
+  $('hbt').style.setProperty('--hdur',Math.max(24,Math.min(120,Math.round((H.t.length+(H.s||'').length)*0.45)))+'s');
+  $('hbar').hidden=false;
 })();
 $('srow').innerHTML=SHORTS.map(function(v,i){return '<a class="short" href="https://youtube.com/shorts/'+v.id+'" data-feed="'+i+'">'+thumb(v.id)+'<div class="fade"></div><span class="pb"></span><span class="over">'+esc(v.t.split('|')[0])+'</span></a>'}).join('');
 

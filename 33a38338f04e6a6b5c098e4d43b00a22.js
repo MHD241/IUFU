@@ -50,6 +50,7 @@ async function raw(path, o) {
   o = o || {};
   var hd = { apikey: CFG.key, 'Content-Type': 'application/json' };
   if (o.token) hd.Authorization = 'Bearer ' + o.token;
+  if (o.prefer) hd.Prefer = o.prefer;
   var r;
   try {
     r = await fetch(CFG.url + path, { method: o.method || 'GET', headers: hd, cache: 'no-store',
@@ -397,10 +398,25 @@ async function loadRows() {
 async function loadAudit() {
   var body = $('auditBody'); clear(body);
   var data;
-  try { data = await api('/rest/v1/audit_log?select=*&table_name=eq.videos&order=id.desc&limit=200'); }
+  try { data = await api('/rest/v1/audit_log?select=*&table_name=in.(videos,daily_hadith)&order=id.desc&limit=200'); }
   catch (e) { body.appendChild(h('tr', {}, [h('td', { colspan: '5', text: 'Could not load the audit log: ' + e.message })])); return; }
   (data || []).forEach(function (a) {
     var n = a.new_data || {}, o = a.old_data || {}, ch = [], act = a.operation;
+    if (a.table_name === 'daily_hadith') {
+      if (act === 'UPDATE' && o.published === true && n.published === false) act = 'HADITH REMOVED';
+      else if (act === 'UPDATE' && o.published === false && n.published === true) act = 'HADITH RESTORED';
+      else act = act === 'INSERT' ? 'HADITH ADDED' : 'HADITH EDITED';
+      if (a.operation === 'INSERT') ch.push('date: ' + n.show_date, 'text: ' + n.text);
+      else ['show_date', 'text', 'source'].forEach(function (k) { if (o[k] !== n[k]) ch.push(k + ': ' + (o[k] == null ? '' : o[k]) + ' → ' + (n[k] == null ? '' : n[k])); });
+      body.appendChild(h('tr', {}, [
+        h('td', { text: new Date(a.created_at).toLocaleString('en-GB') }),
+        h('td', { text: a.actor_email || (a.actor ? 'admin' : 'system') }),
+        h('td', { text: act }),
+        h('td', { dir: 'auto', text: 'Hadith ' + (n.show_date || o.show_date || '') }),
+        h('td', { text: ch.join('\n') })
+      ]));
+      return;
+    }
     if (act === 'UPDATE') {
       if (o.published === true && n.published === false) act = 'REMOVED';
       else if (o.published === false && n.published === true) act = 'RESTORED';
@@ -415,6 +431,124 @@ async function loadAudit() {
       h('td', { text: ch.join('\n') })
     ]));
   });
+}
+
+/* ---------- daily Hadith (shown as a rolling banner in the website header) ---------- */
+var hrows = [], hEdit = null, hStage = null;
+function todayStr() { var d = new Date(), p = function (n) { return (n < 10 ? '0' : '') + n; }; return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()); }
+async function loadHadith() {
+  hrows = await api('/rest/v1/daily_hadith?select=id,show_date,text,source,published&order=show_date.desc&limit=400') || [];
+}
+function hStatus(r, nowId) {
+  if (!r.published) return 'Removed';
+  if (r.id === nowId) return 'Showing now';
+  return r.show_date > todayStr() ? 'Scheduled' : 'Past';
+}
+function renderHadith() {
+  var t = todayStr(), now = hrows.filter(function (r) { return r.published && r.show_date <= t; })[0];
+  $('hNow').textContent = now ? '★ Showing on the website now: ' + now.text + (now.source ? ' — ' + now.source : '') : 'No Hadith is showing on the website right now.';
+  var ul = $('hList'); clear(ul);
+  hrows.forEach(function (r) {
+    var st = hStatus(r, now && now.id);
+    var acts = [h('button', { class: 'btn line sm', type: 'button', text: 'Edit', onclick: function () { openHadith(r); } })];
+    acts.push(h('button', { class: 'btn line sm', type: 'button', text: r.published ? 'Remove' : 'Restore', onclick: function () { askHadithToggle(r); } }));
+    ul.appendChild(h('li', { class: 'item hitem' + (r.published ? '' : ' removed') }, [
+      h('div', { class: 'hdate', text: r.show_date }),
+      h('div', { class: 'meta' }, [
+        h('div', { class: 'title', dir: 'auto', text: r.text }),
+        h('div', { class: 'url', dir: 'auto', text: r.source || '' }),
+        h('div', { class: 'tags' }, [h('span', { class: 'tag' + (st === 'Showing now' ? ' gold' : ''), text: st })])
+      ]),
+      h('div', { class: 'acts' }, acts)
+    ]));
+  });
+  show($('hEmpty'), hrows.length === 0);
+}
+function nextFreeDate() {
+  var d = new Date(), used = {};
+  hrows.forEach(function (r) { used[r.show_date] = 1; });
+  var p = function (n) { return (n < 10 ? '0' : '') + n; };
+  for (var i = 0; i < 800; i++) {
+    var s = d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
+    if (!used[s]) return s;
+    d.setDate(d.getDate() + 1);
+  }
+  return todayStr();
+}
+function openHadith(r) {
+  hEdit = r || null; hStage = null;
+  $('hTitle').textContent = r ? 'Edit Hadith' : 'Add Hadith';
+  $('hDate').value = r ? r.show_date : nextFreeDate();
+  $('hText').value = r ? r.text : '';
+  $('hSource').value = r ? (r.source || '') : '';
+  say($('hMsg'), ''); hStep(1); hPreview();
+  $('hDlg').showModal(); $('hText').focus();
+}
+function hStep(n) {
+  show($('hForm1'), n === 1); show($('hForm2'), n === 2);
+}
+function hPreview() {
+  var t = $('hText').value.trim(), s = $('hSource').value.trim();
+  $('hPrev').textContent = t ? '✦ ' + t + (s ? ' — ' + s : '') : 'The Hadith will appear here as it rolls across the website header.';
+  $('hCount').textContent = $('hText').value.length + ' / 600';
+}
+function hReview(ev) {
+  ev.preventDefault();
+  var d = $('hDate').value, t = $('hText').value.trim(), s = $('hSource').value.trim(), m = $('hMsg');
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(d)) return say(m, 'Choose the date this Hadith should appear.', 'err');
+  if (t.length < 10) return say(m, 'The Hadith text is too short (at least 10 characters).', 'err');
+  if (t.length > 600) return say(m, 'The Hadith text is too long (maximum 600 characters).', 'err');
+  if (s.length > 120) return say(m, 'The source is too long (maximum 120 characters).', 'err');
+  var clash = hrows.filter(function (r) { return r.show_date === d && (!hEdit || r.id !== hEdit.id); })[0];
+  if (clash) return say(m, 'There is already a Hadith for ' + d + '. Edit that one, or choose another date.', 'err');
+  hStage = { show_date: d, text: t, source: s };
+  var box = $('hSummary'); clear(box);
+  var rows2 = hEdit
+    ? [['Date', hEdit.show_date, d], ['Text', hEdit.text, t], ['Source', hEdit.source || '', s]].filter(function (x) { return x[1] !== x[2]; })
+    : [['Add Hadith for', null, d], ['Text', null, t], ['Source', null, s || '(none)']];
+  if (!rows2.length) return say(m, 'Nothing has changed.', 'err');
+  rows2.forEach(function (x) {
+    var line = h('div', { class: 'diff', dir: 'auto' }); line.appendChild(document.createTextNode(x[0] + ': '));
+    if (x[1] != null) { line.appendChild(h('del', { text: x[1] || '(empty)' })); line.appendChild(document.createTextNode(' → ')); }
+    line.appendChild(h('ins', { text: x[2] })); box.appendChild(line);
+  });
+  say(m, ''); hStep(2);
+}
+async function hSave() {
+  var m = $('hMsg'); $('hConfirm').disabled = true; say(m, 'Saving…');
+  var saved;
+  try {
+    if (hEdit) saved = await api('/rest/v1/daily_hadith?id=eq.' + encodeURIComponent(hEdit.id), { method: 'PATCH', body: hStage, prefer: 'return=representation' });
+    else saved = await api('/rest/v1/daily_hadith', { method: 'POST', body: hStage, prefer: 'return=representation' });
+  } catch (e) {
+    $('hConfirm').disabled = false;
+    var msg = e.status === 409 || /duplicate key/i.test(e.message) ? 'There is already a Hadith for that date.' : e.message;
+    return say(m, 'Not saved. ' + msg + ' Nothing was changed.', 'err');
+  }
+  var ok = Array.isArray(saved) && saved.length === 1 && saved[0].text === hStage.text && saved[0].show_date === hStage.show_date && (saved[0].source || '') === hStage.source;
+  try { await loadHadith(); } catch (e) { ok = false; }
+  var back = hrows.filter(function (r) { return r.text === hStage.text && r.show_date === hStage.show_date; })[0];
+  $('hConfirm').disabled = false; $('hDlg').close(); renderHadith();
+  if (ok && back) banner('Hadith saved and verified on the server. The website shows it on its next page load (on its date).', 'ok');
+  else banner('The server did not confirm the Hadith was saved. Reload and check before trying again.', 'err');
+}
+var hToggle = null;
+function askHadithToggle(r) {
+  hToggle = r;
+  $('hrTitle').textContent = (r.published ? 'Remove' : 'Restore') + ' the Hadith for ' + r.show_date + '?';
+  $('hrText').textContent = r.published ? 'It will stop appearing on the website. You can restore it later.' : 'It will appear on the website again on its date.';
+  $('hrYes').textContent = r.published ? 'Remove from site' : 'Restore';
+  $('hrDlg').showModal();
+}
+async function doHadithToggle() {
+  var r = hToggle, want = !r.published; $('hrYes').disabled = true;
+  try {
+    var res = await api('/rest/v1/daily_hadith?id=eq.' + encodeURIComponent(r.id), { method: 'PATCH', body: { published: want }, prefer: 'return=representation' });
+    if (!Array.isArray(res) || res.length !== 1 || res[0].published !== want) throw new Error('The server did not confirm the change.');
+    await loadHadith(); $('hrDlg').close(); renderHadith();
+    banner('Hadith for ' + r.show_date + (want ? ' restored' : ' removed') + ' and verified on the server.', 'ok');
+  } catch (e) { $('hrDlg').close(); banner('Not changed. ' + e.message, 'err'); }
+  $('hrYes').disabled = false;
 }
 
 /* ---------- sign in / out ---------- */
@@ -437,7 +571,7 @@ async function signIn(ev) {
 }
 async function signOut(message) {
   var tok = S && S.access;
-  S = null; role = null; saveSession(); rows = []; edits = {}; flags = {}; adds = []; newPick = undefined;
+  S = null; role = null; saveSession(); rows = []; hrows = []; edits = {}; flags = {}; adds = []; newPick = undefined;
   if (tok) { try { await raw('/auth/v1/logout', { method: 'POST', token: tok }); } catch (e) {} }
   show($('app'), false); show($('login'), true);
   say($('loginMsg'), message || '', message ? 'err' : '');
@@ -449,6 +583,7 @@ async function start() {
     if (!me || !me.length) { await signOut('This account is not authorised to use the console.'); return; }
     role = 'admin';
     await loadRows();
+    try { await loadHadith(); } catch (e) { hrows = []; }
   } catch (e) {
     if (S) await signOut('Could not load the console: ' + e.message);
     return;
@@ -456,7 +591,7 @@ async function start() {
   $('who').textContent = S.email;
   show($('auditTab'), true);
   show($('login'), false); show($('app'), true);
-  sync(); idle();
+  sync(); renderHadith(); idle();
 }
 
 /* ---------- idle sign-out (30 min) ---------- */
@@ -477,6 +612,14 @@ function init() {
   $('editCancel').addEventListener('click', function () { $('editDlg').close(); });
   $('rmNo').addEventListener('click', function () { $('rmDlg').close(); });
   $('rmYes').addEventListener('click', function () { flags[rmId] = 'remove'; $('rmDlg').close(); sync(); });
+  $('hAdd').addEventListener('click', function () { openHadith(null); });
+  $('hForm1').addEventListener('submit', hReview);
+  $('hText').addEventListener('input', hPreview); $('hSource').addEventListener('input', hPreview);
+  $('hCancel').addEventListener('click', function () { $('hDlg').close(); });
+  $('hBack').addEventListener('click', function () { hStep(1); say($('hMsg'), ''); });
+  $('hConfirm').addEventListener('click', hSave);
+  $('hrNo').addEventListener('click', function () { $('hrDlg').close(); });
+  $('hrYes').addEventListener('click', doHadithToggle);
   $('reviewBtn').addEventListener('click', openReview);
   $('rCancel').addEventListener('click', function () { $('reviewDlg').close(); });
   $('rConfirm').addEventListener('click', publish);
@@ -484,9 +627,9 @@ function init() {
   $('tabs').addEventListener('click', function (ev) {
     var b = ev.target.closest('button[data-kind]'); if (!b) return;
     Array.prototype.forEach.call($('tabs').children, function (x) { x.setAttribute('aria-selected', x === b ? 'true' : 'false'); });
-    var k = b.dataset.kind, isAudit = k === 'audit';
-    show($('listView'), !isAudit); show($('auditView'), isAudit);
-    if (isAudit) loadAudit(); else { tab = k; $('q').value = ''; render(); }
+    var k = b.dataset.kind, isAudit = k === 'audit', isH = k === 'hadith';
+    show($('listView'), !isAudit && !isH); show($('auditView'), isAudit); show($('hadithView'), isH);
+    if (isAudit) loadAudit(); else if (isH) { renderHadith(); } else { tab = k; $('q').value = ''; render(); }
   });
   window.addEventListener('beforeunload', function (e) { if (pendingCount()) { e.preventDefault(); e.returnValue = ''; } });
   loadSession();
