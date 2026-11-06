@@ -398,10 +398,20 @@ async function loadRows() {
 async function loadAudit() {
   var body = $('auditBody'); clear(body);
   var data;
-  try { data = await api('/rest/v1/audit_log?select=*&table_name=in.(videos,daily_hadith)&order=id.desc&limit=200'); }
+  try { data = await api('/rest/v1/audit_log?select=*&table_name=in.(videos,daily_hadith,banner_settings)&order=id.desc&limit=200'); }
   catch (e) { body.appendChild(h('tr', {}, [h('td', { colspan: '5', text: 'Could not load the audit log: ' + e.message })])); return; }
   (data || []).forEach(function (a) {
     var n = a.new_data || {}, o = a.old_data || {}, ch = [], act = a.operation;
+    if (a.table_name === 'banner_settings') {
+      body.appendChild(h('tr', {}, [
+        h('td', { text: new Date(a.created_at).toLocaleString('en-GB') }),
+        h('td', { text: a.actor_email || (a.actor ? 'admin' : 'system') }),
+        h('td', { text: 'BANNER SPEED' }),
+        h('td', { text: 'Hadith banner' }),
+        h('td', { text: 'speed: ' + (o.hadith_speed == null ? '' : o.hadith_speed) + ' → ' + (n.hadith_speed == null ? '' : n.hadith_speed) })
+      ]));
+      return;
+    }
     if (a.table_name === 'daily_hadith') {
       if (act === 'UPDATE' && o.published === true && n.published === false) act = 'HADITH REMOVED';
       else if (act === 'UPDATE' && o.published === false && n.published === true) act = 'HADITH RESTORED';
@@ -434,17 +444,32 @@ async function loadAudit() {
 }
 
 /* ---------- daily Hadith (shown as a rolling banner in the website header) ---------- */
-var hrows = [], hEdit = null, hStage = null;
+var hrows = [], hEdit = null, hStage = null, hSpeed = 3, hSpeedSaved = 3;
+var SPEED_MULT = [0.5, 0.75, 1, 1.6, 2.4];
+function demoSpeed() { var v = +$('hSpeed').value || 3; $('hDemo').style.animationDuration = Math.round(20 / SPEED_MULT[v - 1]) + 's'; }
 function todayStr() { var d = new Date(), p = function (n) { return (n < 10 ? '0' : '') + n; }; return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()); }
 async function loadHadith() {
   hrows = await api('/rest/v1/daily_hadith?select=id,show_date,text,source,published&order=show_date.desc&limit=400') || [];
+  var bs = await api('/rest/v1/banner_settings?select=hadith_speed&limit=1');
+  hSpeedSaved = (bs && bs[0] && bs[0].hadith_speed) || 3;
 }
 function hStatus(r, nowId) {
   if (!r.published) return 'Removed';
   if (r.id === nowId) return 'Showing now';
   return r.show_date > todayStr() ? 'Scheduled' : 'Past';
 }
+async function saveSpeed() {
+  var want = +$('hSpeed').value, btn = $('hSpeedSave'); btn.disabled = true;
+  try {
+    var res = await api('/rest/v1/banner_settings?id=eq.true', { method: 'PATCH', body: { hadith_speed: want }, prefer: 'return=representation' });
+    if (!Array.isArray(res) || res.length !== 1 || res[0].hadith_speed !== want) throw new Error('The server did not confirm the change.');
+    hSpeedSaved = want;
+    banner('Banner speed set to ' + want + ' and verified on the server. The website uses it on its next page load.', 'ok');
+  } catch (e) { banner('Speed not changed. ' + e.message, 'err'); }
+  btn.disabled = false;
+}
 function renderHadith() {
+  $('hSpeed').value = String(hSpeedSaved); demoSpeed();
   var t = todayStr(), now = hrows.filter(function (r) { return r.published && r.show_date <= t; })[0];
   $('hNow').textContent = now ? '★ Showing on the website now: ' + now.text + (now.source ? ' — ' + now.source : '') : 'No Hadith is showing on the website right now.';
   var ul = $('hList'); clear(ul);
@@ -613,6 +638,8 @@ function init() {
   $('rmNo').addEventListener('click', function () { $('rmDlg').close(); });
   $('rmYes').addEventListener('click', function () { flags[rmId] = 'remove'; $('rmDlg').close(); sync(); });
   $('hAdd').addEventListener('click', function () { openHadith(null); });
+  $('hSpeed').addEventListener('change', demoSpeed);
+  $('hSpeedSave').addEventListener('click', saveSpeed);
   $('hForm1').addEventListener('submit', hReview);
   $('hText').addEventListener('input', hPreview); $('hSource').addEventListener('input', hPreview);
   $('hCancel').addEventListener('click', function () { $('hDlg').close(); });

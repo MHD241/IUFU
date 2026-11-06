@@ -363,7 +363,6 @@ footer .wrap{padding-left:max(38px,env(safe-area-inset-left,0px));padding-right:
       <a href="#top">الرئيسية</a><a href="#videos">الحلقات</a><a href="#shorts" data-feed="0">مقاطع السيرة</a><a href="#about">عن القناة</a><a href="#accounts">حساباتنا</a>
     </nav>
     <div class="hbar" id="hbar" role="region" aria-label="حديث اليوم" hidden><div class="hbar-t" id="hbt"></div></div>
-    <button class="btn line sm" data-feed="0">شاهد المقاطع</button>
   </div>
 </header>
 
@@ -508,7 +507,8 @@ $('vgrid').innerHTML='<div class="vstack">'+vc(0)+vc(3)+'</div><div class="vstac
   var H=SITE.hadith; if(!H||!H.t) return;
   var one='<span class="hi">'+esc(H.t)+(H.s?' <b>— '+esc(H.s)+'</b>':'')+'</span>';
   $('hbt').innerHTML=one+one;
-  $('hbt').style.setProperty('--hdur',Math.max(24,Math.min(120,Math.round((H.t.length+(H.s||'').length)*0.45)))+'s');
+  var mult=[0.5,0.75,1,1.6,2.4][Math.min(5,Math.max(1,Math.round(+SITE.hadithSpeed||3)))-1];
+  $('hbt').style.setProperty('--hdur',Math.max(8,Math.min(240,Math.round(Math.max(24,Math.min(120,(H.t.length+(H.s||'').length)*0.45))/mult)))+'s');
   $('hbar').hidden=false;
   $('hdt').textContent=H.t;$('hds').textContent=H.s||'';if(!H.s)$('hds').hidden=true;$('hadith').hidden=false;
 })();

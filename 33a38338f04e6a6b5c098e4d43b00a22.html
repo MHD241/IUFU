@@ -66,6 +66,15 @@
     <section id="hadithView" hidden>
       <p class="muted small">A short Hadith rolls across the website header like a banner. Each date has one Hadith; the website shows the most recent one whose date has arrived. Enter the text and its source carefully: it is shown exactly as typed.</p>
       <p id="hNow" class="newnow" role="status"></p>
+      <div class="speedbox">
+        <label>Banner speed (how fast the Hadith rolls across the website header)
+          <select id="hSpeed">
+            <option value="1">1 · Very slow</option><option value="2">2 · Slow</option><option value="3">3 · Normal</option>
+            <option value="4">4 · Fast</option><option value="5">5 · Very fast</option>
+          </select></label>
+        <div class="speeddemo" aria-hidden="true"><div id="hDemo" class="demo-t" dir="rtl">✦ مثال لحركة الشريط ✦ مثال لحركة الشريط ✦ مثال لحركة الشريط ✦ مثال لحركة الشريط</div></div>
+        <button class="btn line sm" id="hSpeedSave" type="button">Save speed</button>
+      </div>
       <div class="tools"><span></span><span></span><button class="btn solid sm" id="hAdd" type="button">+ Add Hadith</button></div>
       <ul id="hList" class="list"></ul>
       <p id="hEmpty" class="muted" hidden>No Hadith added yet. The banner stays hidden until one is added.</p>

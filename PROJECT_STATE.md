@@ -50,3 +50,9 @@ Owner approves the revision-2 preview; then deploy the edge function, commit and
 - Applied migration daily_hadith to Supabase IUFU; no Hadith seeded, so banner/section stay hidden until an admin adds one in the Daily Hadith tab.
 - Pushed to main: hero logo/button/fade, New video above Episodes, Hadith banner + section.
 - Untested on production: admin sign-in, saving a Hadith, title lookup.
+
+## Revision 7 — Hadith banner speed + header button removed (PREVIEW ONLY; migration 20261106_banner_speed.sql NOT applied; nothing pushed)
+- Admin 'Daily Hadith' tab: Banner speed 1-5 (3 normal) with live demo; saved to public.banner_settings (single row, public read, admin update, audited). Website reads it via live-content.js (SITE.hadithSpeed).
+- Header 'watch shorts' button removed.
+- Also unpushed: hero paragraph narrowed/aligned (commit 0f7fde5).
+- Next: on approval, apply migration, then push + merge.

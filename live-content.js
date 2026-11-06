@@ -24,7 +24,12 @@
     var d = new Date(), p = function (n) { return (n < 10 ? '0' : '') + n; };
     var today = d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
     var ac = new AbortController(), t = setTimeout(function () { ac.abort(); }, 3500);
-    return fetch(C.url + '/rest/v1/daily_hadith?select=text,source&published=eq.true&show_date=lte.' + today + '&order=show_date.desc&limit=1',
+    var ac2 = new AbortController(), t2 = setTimeout(function () { ac2.abort(); }, 3500);
+    var sp = fetch(C.url + '/rest/v1/banner_settings?select=hadith_speed&limit=1', { headers: { apikey: C.key }, signal: ac2.signal, cache: 'no-store' })
+      .then(function (r) { clearTimeout(t2); return r.ok ? r.json() : []; })
+      .then(function (a) { var v = a && a[0] && a[0].hadith_speed; if (typeof v === 'number' && v >= 1 && v <= 5) window.SITE.hadithSpeed = v; })
+      .catch(function () { clearTimeout(t2); });
+    var hp = fetch(C.url + '/rest/v1/daily_hadith?select=text,source&published=eq.true&show_date=lte.' + today + '&order=show_date.desc&limit=1',
       { headers: { apikey: C.key }, signal: ac.signal, cache: 'no-store' })
       .then(function (r) { clearTimeout(t); if (!r.ok) throw new Error('http'); return r.json(); })
       .then(function (a) {
@@ -33,6 +38,7 @@
           window.SITE.hadith = { t: h.text, s: typeof h.source === 'string' ? h.source.slice(0, 120) : '' };
       })
       .catch(function () { clearTimeout(t); });
+    return Promise.all([sp, hp]);
   }
 
   function apply(rows) {
