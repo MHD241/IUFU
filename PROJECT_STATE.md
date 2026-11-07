@@ -56,3 +56,7 @@ Owner approves the revision-2 preview; then deploy the edge function, commit and
 - Header 'watch shorts' button removed.
 - Also unpushed: hero paragraph narrowed/aligned (commit 0f7fde5).
 - Next: on approval, apply migration, then push + merge.
+
+## Revision 8 — DEPLOYED 2026-11-07 (user: "push")
+- Applied migration banner_speed to Supabase IUFU (default speed 3). Pushed: hero paragraph width, Hadith banner speed control, header watch-shorts button removed.
+- Untested on production: saving speed from the admin console.
