@@ -97,10 +97,11 @@ textarea{width:100%;padding:10px 14px;border-radius:12px;border:1px solid var(--
 .hprev{border:1px dashed var(--line);border-radius:12px;padding:10px 14px;overflow-wrap:anywhere}
 #hSummary .diff{border:1px solid var(--line);border-radius:12px;padding:10px;margin-bottom:8px;overflow-wrap:anywhere}
 #hDate{direction:ltr}
+.speedbox #hDemoNote{grid-column:1/-1;margin:0}
 .speedbox{display:grid;grid-template-columns:1fr auto;gap:10px 14px;align-items:end;margin:12px 0;padding:12px;border:1px solid var(--line);border-radius:14px;background:rgba(0,0,0,.18)}
 .speedbox label{grid-column:1/-1}
-.speeddemo{overflow:hidden;direction:ltr;border:1px solid var(--line);border-radius:99px;height:40px;display:flex;align-items:center;-webkit-mask-image:linear-gradient(to right,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(to right,transparent,#000 8%,#000 92%,transparent)}
-.demo-t{white-space:nowrap;width:max-content;animation:demoroll 20s linear infinite;color:var(--gold-l)}
+.speeddemo{grid-column:1/-1;max-width:600px;background:rgba(0,0,0,.18);overflow:hidden;direction:ltr;border:1px solid var(--line);border-radius:99px;height:40px;display:flex;align-items:center;-webkit-mask-image:linear-gradient(to right,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(to right,transparent,#000 8%,#000 92%,transparent)}
+.demo-t{white-space:nowrap;width:max-content;animation:demoroll 24s linear infinite;color:var(--text);font-size:16px}
 @keyframes demoroll{from{transform:translateX(-50%)}to{transform:translateX(0)}}
 @media(prefers-reduced-motion:reduce){.demo-t{animation:none}}
 @media(max-width:560px){.speedbox{grid-template-columns:1fr}}
