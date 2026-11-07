@@ -445,14 +445,14 @@ async function loadAudit() {
 
 /* ---------- daily Hadith (shown as a rolling banner in the website header) ---------- */
 var hrows = [], hEdit = null, hStage = null, hSpeed = 3, hSpeedSaved = 3;
-var SPEED_MULT = [0.5, 0.75, 1, 1.6, 2.4];
+var SPEED_MULT = [1.2, 1.8, 2.4, 4, 7];
 function demoSpeed() {
   // Same rule the website uses, so this preview matches what visitors will see.
   var v = +$('hSpeed').value || 3, t = todayStr(), now = hrows.filter(function (r) { return r.published && r.show_date <= t; })[0];
   var text = now ? now.text + (now.source ? ' — ' + now.source : '') : 'مثال: هكذا سيظهر الحديث متحركًا في أعلى الموقع — متفق عليه';
   var one = '✦ ' + text + '    ', d = $('hDemo');
   if (d.dataset.txt !== text) { d.dataset.txt = text; d.textContent = one + one; }
-  var secs = Math.max(8, Math.min(240, Math.round(Math.max(24, Math.min(120, text.length * 0.45)) / SPEED_MULT[v - 1])));
+  var secs = Math.max(3, Math.min(240, Math.round(Math.max(24, Math.min(120, text.length * 0.45)) / SPEED_MULT[v - 1])));
   d.style.animationDuration = secs + 's';
   $('hDemoNote').textContent = 'Preview: one full loop takes about ' + secs + ' seconds at speed ' + v + (now ? ' (using the Hadith showing now).' : ' (sample text, no Hadith is showing yet).');
 }
