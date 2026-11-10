@@ -43,10 +43,9 @@
         });
         if (!list.length) return;
         var day = Math.floor(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 864e5);
-        var k = day % list.length;
-        // The banner starts from today's Hadith, so visitors see a different one first each day.
-        window.SITE.hadiths = list.slice(k).concat(list.slice(0, k));
-        window.SITE.hadith = list[k];
+        // The banner always rolls the whole series in order, from the first Hadith to the last, then repeats.
+        window.SITE.hadiths = list;
+        window.SITE.hadith = list[day % list.length];
       })
       .catch(function () { clearTimeout(t); });
     return Promise.all([sp, hp]);
