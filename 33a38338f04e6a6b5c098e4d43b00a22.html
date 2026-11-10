@@ -64,7 +64,7 @@
     </section>
 
     <section id="hadithView" hidden>
-      <p class="muted small">A short Hadith rolls across the website header like a banner. Each date has one Hadith; the website shows the most recent one whose date has arrived. Enter the text and its source carefully: it is shown exactly as typed.</p>
+      <p class="muted small">Hadiths roll across the website header one after another. Every published Hadith whose date has arrived joins the rotation (in date order), and each day the banner starts from a different one, which is also shown as "Hadith of the day". A Hadith with a future date joins on that date. Enter the text and its source carefully: it is shown exactly as typed.</p>
       <p id="hNow" class="newnow" role="status"></p>
       <div class="speedbox">
         <label>Banner speed (how fast the Hadith rolls across the website header)
@@ -76,7 +76,7 @@
         <p id="hDemoNote" class="muted small" role="status"></p>
         <button class="btn line sm" id="hSpeedSave" type="button">Save speed</button>
       </div>
-      <div class="tools"><span></span><span></span><button class="btn solid sm" id="hAdd" type="button">+ Add Hadith</button></div>
+      <div class="tools"><span></span><button class="btn line sm" id="hSeries" type="button" hidden>Add the prepared series</button><button class="btn solid sm" id="hAdd" type="button">+ Add Hadith</button></div>
       <ul id="hList" class="list"></ul>
       <p id="hEmpty" class="muted" hidden>No Hadith added yet. The banner stays hidden until one is added.</p>
     </section>
@@ -153,6 +153,17 @@
 </dialog>
 
 <!-- Review dialog -->
+<dialog id="hsDlg">
+  <h2>Add the prepared Hadith series</h2>
+  <p id="hsIntro" class="muted small"></p>
+  <div id="hsList" class="hslist" dir="rtl"></div>
+  <p id="hsMsg" class="msg" role="status"></p>
+  <div class="row">
+    <button class="btn line sm" id="hsNo" type="button">Cancel</button>
+    <button class="btn solid sm" id="hsYes" type="button">Confirm &amp; save</button>
+  </div>
+</dialog>
+
 <dialog id="reviewDlg">
   <h2>Review changes</h2>
   <p class="muted small">Only the changes ticked below will be published. Nothing is saved until you confirm.</p>
@@ -175,6 +186,7 @@
 </dialog>
 
 <script src="supabase-config.js"></script>
+<script src="hadith-series.js"></script>
 <script src="33a38338f04e6a6b5c098e4d43b00a22.js"></script>
 </body>
 </html>

@@ -29,13 +29,24 @@
       .then(function (r) { clearTimeout(t2); return r.ok ? r.json() : []; })
       .then(function (a) { var v = a && a[0] && a[0].hadith_speed; if (typeof v === 'number' && v >= 1 && v <= 5) window.SITE.hadithSpeed = v; })
       .catch(function () { clearTimeout(t2); });
-    var hp = fetch(C.url + '/rest/v1/daily_hadith?select=text,source&published=eq.true&show_date=lte.' + today + '&order=show_date.desc&limit=1',
+    // All published Hadiths whose date has arrived, in series order (oldest date first).
+    // They all rotate in the header banner; the "Hadith of the day" card picks one per calendar day.
+    var hp = fetch(C.url + '/rest/v1/daily_hadith?select=text,source,show_date&published=eq.true&show_date=lte.' + today + '&order=show_date.asc&limit=300',
       { headers: { apikey: C.key }, signal: ac.signal, cache: 'no-store' })
       .then(function (r) { clearTimeout(t); if (!r.ok) throw new Error('http'); return r.json(); })
       .then(function (a) {
-        var h = Array.isArray(a) && a[0];
-        if (h && typeof h.text === 'string' && h.text.length >= 10 && h.text.length <= 600)
-          window.SITE.hadith = { t: h.text, s: typeof h.source === 'string' ? h.source.slice(0, 120) : '' };
+        if (!Array.isArray(a)) return;
+        var list = [];
+        a.forEach(function (h) {
+          if (h && typeof h.text === 'string' && h.text.length >= 10 && h.text.length <= 600)
+            list.push({ t: h.text, s: typeof h.source === 'string' ? h.source.slice(0, 120) : '' });
+        });
+        if (!list.length) return;
+        var day = Math.floor(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 864e5);
+        var k = day % list.length;
+        // The banner starts from today's Hadith, so visitors see a different one first each day.
+        window.SITE.hadiths = list.slice(k).concat(list.slice(0, k));
+        window.SITE.hadith = list[k];
       })
       .catch(function () { clearTimeout(t); });
     return Promise.all([sp, hp]);

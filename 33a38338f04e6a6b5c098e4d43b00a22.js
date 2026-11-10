@@ -454,7 +454,7 @@ function demoSpeed() {
   if (d.dataset.txt !== text) { d.dataset.txt = text; d.textContent = one + one; }
   var secs = Math.max(3, Math.min(240, Math.round(Math.max(24, Math.min(120, text.length * 0.45)) / SPEED_MULT[v - 1])));
   d.style.animationDuration = secs + 's';
-  $('hDemoNote').textContent = 'Preview: one full loop takes about ' + secs + ' seconds at speed ' + v + (now ? ' (using the Hadith showing now).' : ' (sample text, no Hadith is showing yet).');
+  $('hDemoNote').textContent = 'Preview: each Hadith takes about ' + secs + ' seconds at speed ' + v + (now ? ' (using the Hadith showing now).' : ' (sample text, no Hadith is showing yet).');
 }
 function todayStr() { var d = new Date(), p = function (n) { return (n < 10 ? '0' : '') + n; }; return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()); }
 async function loadHadith() {
@@ -465,7 +465,56 @@ async function loadHadith() {
 function hStatus(r, nowId) {
   if (!r.published) return 'Removed';
   if (r.id === nowId) return 'Showing now';
-  return r.show_date > todayStr() ? 'Scheduled' : 'Past';
+  return r.show_date > todayStr() ? 'Scheduled' : 'In the banner';
+}
+// Same day number the website uses to pick the "Hadith of the day".
+function dayNo() { var d = new Date(); return Math.floor(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 864e5); }
+
+/* ---------- prepared series (hadith-series.js): add all of it in one reviewed step ---------- */
+var hsStage = null;
+function hSeriesItems() {
+  var S2 = window.IUFU_HADITH_SERIES, have = {};
+  if (!S2 || !Array.isArray(S2.items)) return [];
+  hrows.forEach(function (r) { have[r.text] = 1; });
+  return S2.items.filter(function (x) { return x && typeof x.text === 'string' && x.text.length >= 10 && x.text.length <= 600 && !have[x.text]; });
+}
+function hSeriesButton() {
+  var n = hSeriesItems().length, b = $('hSeries');
+  b.textContent = 'Add the prepared series (' + n + ')'; show(b, n > 0);
+}
+function openSeries() {
+  var items = hSeriesItems(); if (!items.length) return;
+  // Dates: the free dates counting back from today, so every Hadith joins the banner at once, in series order.
+  var used = {}, dates = [], d = new Date(), p = function (n) { return (n < 10 ? '0' : '') + n; };
+  hrows.forEach(function (r) { used[r.show_date] = 1; });
+  for (var i = 0; dates.length < items.length && i < 3000; i++) {
+    var s = d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
+    if (!used[s]) dates.push(s);
+    d.setDate(d.getDate() - 1);
+  }
+  dates.reverse();
+  hsStage = items.map(function (x, k) { return { show_date: dates[k], text: x.text, source: (x.source || '').slice(0, 120) }; });
+  $('hsIntro').textContent = hsStage.length + ' Hadiths (' + ((window.IUFU_HADITH_SERIES || {}).name || '') + ') will be added and will start rotating in the website banner. Dates ' + dates[0] + ' to ' + dates[dates.length - 1] + ' are used only to keep the order. Hadiths already in the list are skipped. Nothing is saved until you confirm.';
+  var box = $('hsList'); clear(box);
+  hsStage.forEach(function (x, k) { box.appendChild(h('div', {}, [document.createTextNode((k + 1) + '. ' + x.text), h('small', { text: '— ' + x.source })])); });
+  say($('hsMsg'), ''); $('hsYes').disabled = false; $('hsDlg').showModal();
+}
+async function saveSeries() {
+  var m = $('hsMsg'), want = hsStage; $('hsYes').disabled = true; say(m, 'Saving…');
+  var saved;
+  try { saved = await api('/rest/v1/daily_hadith', { method: 'POST', body: want, prefer: 'return=representation' }); }
+  catch (e) {
+    $('hsYes').disabled = false;
+    var msg = e.status === 409 || /duplicate key/i.test(e.message) ? 'One of the dates is already used. Reload the page and try again.' : e.message;
+    return say(m, 'Not saved. ' + msg + ' Nothing was changed.', 'err');
+  }
+  var ok = Array.isArray(saved) && saved.length === want.length;
+  try { await loadHadith(); } catch (e) { ok = false; }
+  var have = {}; hrows.forEach(function (r) { have[r.text + '|' + r.show_date] = 1; });
+  ok = ok && want.every(function (x) { return have[x.text + '|' + x.show_date]; });
+  $('hsDlg').close(); renderHadith();
+  if (ok) banner(want.length + ' Hadiths saved and verified on the server. They rotate in the website banner on its next page load.', 'ok');
+  else banner('The server did not confirm every Hadith was saved. Reload and check the list before trying again.', 'err');
 }
 async function saveSpeed() {
   var want = +$('hSpeed').value, btn = $('hSpeedSave'); btn.disabled = true;
@@ -479,8 +528,10 @@ async function saveSpeed() {
 }
 function renderHadith() {
   $('hSpeed').value = String(hSpeedSaved); demoSpeed();
-  var t = todayStr(), now = hrows.filter(function (r) { return r.published && r.show_date <= t; })[0];
-  $('hNow').textContent = now ? '★ Showing on the website now: ' + now.text + (now.source ? ' — ' + now.source : '') : 'No Hadith is showing on the website right now.';
+  var t = todayStr(), live = hrows.filter(function (r) { return r.published && r.show_date <= t; });
+  var now = live.length ? live.slice().sort(function (a, b) { return a.show_date < b.show_date ? -1 : 1; })[dayNo() % live.length] : null;
+  $('hNow').textContent = now ? '★ ' + live.length + ' Hadith' + (live.length === 1 ? '' : 's') + ' rotating in the website banner. Hadith of the day: ' + now.text + (now.source ? ' — ' + now.source : '') : 'No Hadith is showing on the website right now.';
+  hSeriesButton();
   var ul = $('hList'); clear(ul);
   hrows.forEach(function (r) {
     var st = hStatus(r, now && now.id);
@@ -647,6 +698,9 @@ function init() {
   $('rmNo').addEventListener('click', function () { $('rmDlg').close(); });
   $('rmYes').addEventListener('click', function () { flags[rmId] = 'remove'; $('rmDlg').close(); sync(); });
   $('hAdd').addEventListener('click', function () { openHadith(null); });
+  $('hSeries').addEventListener('click', openSeries);
+  $('hsNo').addEventListener('click', function () { $('hsDlg').close(); });
+  $('hsYes').addEventListener('click', saveSeries);
   $('hSpeed').addEventListener('change', demoSpeed);
   $('hSpeedSave').addEventListener('click', saveSpeed);
   $('hForm1').addEventListener('submit', hReview);
