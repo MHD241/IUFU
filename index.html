@@ -513,7 +513,12 @@ $('vgrid').innerHTML='<div class="vstack">'+vc(0)+vc(3)+'</div><div class="vstac
   var base=L.reduce(function(a,x){return a+Math.max(24,Math.min(120,(x.t.length+(x.s||'').length)*0.45))},0);
   $('hbt').style.setProperty('--hdur',Math.max(3,Math.min(14400,Math.round(base/mult)))+'s');
   $('hbar').hidden=false;
-  $('hdt').textContent=H.t;$('hds').textContent=H.s||'';if(!H.s)$('hds').hidden=true;$('hadith').hidden=false;
+  /* card: shows one Hadith of the series and moves to the next one every minute, in order, then repeats */
+  var MIN=60000;
+  function card(){var x=L[Math.floor(Date.now()/MIN)%L.length]||H;$('hdt').textContent=x.t;$('hds').textContent=x.s||'';$('hds').hidden=!x.s}
+  function tick(){var c=$('hdt').parentNode;c.style.opacity='0';setTimeout(function(){card();c.style.opacity='1'},450);setTimeout(tick,MIN-Date.now()%MIN)}
+  card();$('hadith').hidden=false;
+  if(L.length>1){$('hdt').parentNode.style.transition='opacity .45s';setTimeout(tick,MIN-Date.now()%MIN)}
 })();
 $('srow').innerHTML=SHORTS.map(function(v,i){return '<a class="short" href="https://youtube.com/shorts/'+v.id+'" data-feed="'+i+'">'+thumb(v.id)+'<div class="fade"></div><span class="pb"></span><span class="over">'+esc(v.t.split('|')[0])+'</span></a>'}).join('');
 
