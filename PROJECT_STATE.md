@@ -61,10 +61,10 @@ Owner approves the revision-2 preview; then deploy the edge function, commit and
 - Applied migration banner_speed to Supabase IUFU (default speed 3). Pushed: hero paragraph width, Hadith banner speed control, header watch-shorts button removed.
 - Untested on production: saving speed from the admin console.
 
-## Revision 9 — Rotating Hadith series (PREVIEW ONLY; nothing pushed; no database change needed)
+## Revision 9 — Rotating Hadith series — DEPLOYED 2026-11-10 (owner: "نعم"; commit 80059f4, Pages build success)
 - Owner (Sam, 2026-11-10) approved: Claude prepares the Hadith texts (this replaces the 2026-11-01 rule "admins type Hadith text themselves"); several Hadiths rotate in the banner; 60 authentic Hadiths on the Seerah and the virtues of the Companions, source written short (e.g. "صحيح البخاري 3673").
 - hadith-series.js: the 60 Hadiths (Bukhari/Muslim). Each quoted text checked word for word against the book text at the stated number (fawazahmed0/hadith-api editions); sample numbers re-checked on independent sites.
 - Website: live-content.js loads every published Hadith whose date has arrived (date order); the banner rolls all of them, starting from "today's" Hadith (day number mod count), which the "Hadith of the day" card also shows. Speed per Hadith unchanged.
 - Console: "Add the prepared series (N)" button in Daily Hadith tab -> review list -> Confirm & save (one insert, verified, audited). Uses free dates counting back from today so all join the rotation now; skips texts already present. Status label "Past" renamed "In the banner".
 - Tested against a mock backend (login, review, save, verify, website banner/card, mobile). Not tested on production.
-- Next: owner says "نفذ" -> push to main -> admin signs in to the console and presses "Add the prepared series (60)" then "Confirm & save" (Claude cannot write to this Supabase project: it is on the son's account).
+- Next: admin signs in to the console and presses "Add the prepared series (60)" then "Confirm & save" (Claude cannot write to this Supabase project: it is on the son's account).
